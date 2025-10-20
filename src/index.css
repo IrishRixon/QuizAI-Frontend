@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+    --primary-color: #212D40;
+    --secondary-color: #364156;
+    --accent-color: #7D4E57;
+    --text-color: #D66853;
+    --white-text: #D3D3D3;
+}
+
+@font-face {
+    font-family: "Bungee";
+    src: url("public/font/Bungee-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Bree-serif";
+    src: url("public/font/BreeSerif-Regular.ttf");
+}
