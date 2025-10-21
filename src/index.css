@@ -10,10 +10,34 @@
 
 @font-face {
     font-family: "Bungee";
-    src: url("public/font/Bungee-Regular.ttf");
+    src: url("/font/Bungee-Regular.ttf");
 }
 
 @font-face {
     font-family: "Bree-serif";
-    src: url("public/font/BreeSerif-Regular.ttf");
+    src: url("/font/BreeSerif-Regular.ttf");
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bree-serif";
+}
+
+.title {
+    /* -webkit-text-stroke: 3px #2b3b54; */
+        text-shadow: 
+      -4px -4px 0 #2b3b54,
+       4px -4px 0 #2b3b54,
+      -4px  4px 0 #2b3b54,
+       4px  4px 0 #2b3b54;
+
+       .secondary-title {
+        text-shadow: 
+      -4px -4px 0 #D66853,
+       4px -4px 0 #D66853,
+      -4px  4px 0 #D66853,
+       4px  4px 0 #D66853;
+       }
 }
