@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 
 import Card from "./Card";
 import Difficulty from "./Difficulty";
-
-interface CategoriesSelected {
-  selectedCategories: string[];
-  difficulty: string;
-  numberOfQuestions: number;
-}
+import { useCategorySelection } from "./hooks/useCategorySelection";
 
 const categories = [
   "Food",
@@ -22,62 +17,11 @@ const categories = [
 ];
 
 function Categories() {
-
-  const [isCategoryLessThan3, setsIsCategoryLessThan3] = useState(true);
-  const [selectedCount, setSelectedCount] = useState(0);
-  const [categoriesSelected, setCategoriesSelected] =
-  useState<CategoriesSelected>({
-    selectedCategories: [],
-    difficulty: "",
-    numberOfQuestions: 0,
-  });
-
-
-  const selectedCategoriesLen = categoriesSelected.selectedCategories.length;
-
-  const updateSelectedItem = (newArr: string[]) => {
-    const updated = {
-      ...categoriesSelected,
-      selectedCategories: newArr,
-    };
-
-    setCategoriesSelected(updated);
-  };
-
-  const removeEmittedValue = (val: string) => {
-    const newArr = categoriesSelected.selectedCategories.filter((item) => {
-      return item !== val;
-    });
-
-    updateSelectedItem(newArr);
-    setSelectedCount((s) => s - 1);
-    return;
-  };
-
-  const checkIfValid = (val: string, toggleActive: () => void) => {
-    
-    if (categoriesSelected.selectedCategories.includes(val)) {
-      removeEmittedValue(val);
-      toggleActive();
-    } else if (isCategoryLessThan3) {
-      addEmittedValue(val);
-    }
-  };
-
-  const addEmittedValue = (val: string) => {
-    console.log('exec', 'add');
-    
-    const newArr = [...categoriesSelected.selectedCategories, val];
-    updateSelectedItem(newArr);
-    setSelectedCount((s) => s + 1);
-
-  };
-
-  useEffect(() => {
-    console.log(selectedCategoriesLen);
-    setsIsCategoryLessThan3(selectedCategoriesLen < 3);
-  }, [categoriesSelected.selectedCategories])
-
+  const { 
+    isCategoryLessThanMax, 
+    selectedCategoriesLen, 
+    toggleCategory 
+  } = useCategorySelection(3);
 
   return (
     <div className="h-full w-full p-6 relative z-10 flex flex-col">
@@ -98,7 +42,7 @@ function Categories() {
       </button>
 
       <p className="text-end mt-4 text-(--white-text) text-xl">
-        selected: {selectedCount}/3
+        selected: {selectedCategoriesLen}/3
       </p>
 
       <div className="flex grow mt-8 flex-col">
@@ -110,17 +54,17 @@ function Categories() {
                 alt={item}
                 label={item}
                 key={index}
-                isActive={isCategoryLessThan3}
-                emitValue={(val: string, toggleActive) => checkIfValid(val, toggleActive)}
+                canActive={isCategoryLessThanMax}
+                emitValue={(val: string) =>
+                  toggleCategory(val)
+                }
               ></Card>
             );
           })}
         </div>
 
-        <div>
-          
-        </div>
-          <Difficulty></Difficulty>
+        <div></div>
+        <Difficulty></Difficulty>
         <div>
           <p className="text-start mt-8 text-(--white-text) text-xl">
             Number of questions:

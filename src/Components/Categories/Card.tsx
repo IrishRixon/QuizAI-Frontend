@@ -4,8 +4,8 @@ interface CardProps {
   image: string;
   label: string;
   alt: string;
-  isActive: boolean;
-  emitValue: (label: string, toggleActive: () => void) => void;
+  canActive: boolean;
+  emitValue: (label: string) => void;
 }
 
 function Card(props: CardProps) {
@@ -17,8 +17,8 @@ function Card(props: CardProps) {
         active && "bg-(--secondary-color)"
       }`}
       onClick={() => {
-        setActive(props.isActive);
-        props.emitValue(props.label, () => {setActive(false)});
+        active ? setActive(false) : setActive(props.canActive);
+        props.emitValue(props.label);
       }}
     >
       <p className="text-(--text-color) text-center text-nowrap">

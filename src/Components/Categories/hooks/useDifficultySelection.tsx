@@ -5,7 +5,6 @@ export function useDifficultySelection() {
 
     const handleClicked = (index: number) => {
         setSelectedIndex(s => s = index);
-        
     }
 
     return {
