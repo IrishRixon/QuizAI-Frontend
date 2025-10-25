@@ -1,6 +1,7 @@
-import { useState } from "react";
-import Button from "./Button";
+import { useEffect, useState } from "react";
+
 import Card from "./Card";
+import Difficulty from "./Difficulty";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -8,7 +9,32 @@ interface CategoriesSelected {
   numberOfQuestions: number;
 }
 
+const categories = [
+  "Food",
+  "History",
+  "Music",
+  "Anime",
+  "Heroes",
+  "Sports",
+  "Riddles",
+  "Countries",
+  "Quotes",
+];
+
 function Categories() {
+
+  const [isCategoryLessThan3, setsIsCategoryLessThan3] = useState(true);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [categoriesSelected, setCategoriesSelected] =
+  useState<CategoriesSelected>({
+    selectedCategories: [],
+    difficulty: "",
+    numberOfQuestions: 0,
+  });
+
+
+  const selectedCategoriesLen = categoriesSelected.selectedCategories.length;
+
   const updateSelectedItem = (newArr: string[]) => {
     const updated = {
       ...categoriesSelected,
@@ -16,7 +42,6 @@ function Categories() {
     };
 
     setCategoriesSelected(updated);
-    setsIsCategoryLessThan3(!(updated.selectedCategories.length >= 3));
   };
 
   const removeEmittedValue = (val: string) => {
@@ -30,7 +55,6 @@ function Categories() {
   };
 
   const checkIfValid = (val: string, toggleActive: () => void) => {
-    console.log(isCategoryLessThan3);
     
     if (categoriesSelected.selectedCategories.includes(val)) {
       removeEmittedValue(val);
@@ -41,34 +65,19 @@ function Categories() {
   };
 
   const addEmittedValue = (val: string) => {
+    console.log('exec', 'add');
+    
     const newArr = [...categoriesSelected.selectedCategories, val];
     updateSelectedItem(newArr);
     setSelectedCount((s) => s + 1);
 
-    console.log(categoriesSelected);
   };
 
-  const [categoriesSelected, setCategoriesSelected] =
-    useState<CategoriesSelected>({
-      selectedCategories: [],
-      difficulty: "",
-      numberOfQuestions: 0,
-    });
+  useEffect(() => {
+    console.log(selectedCategoriesLen);
+    setsIsCategoryLessThan3(selectedCategoriesLen < 3);
+  }, [categoriesSelected.selectedCategories])
 
-  const categories = [
-    "Food",
-    "History",
-    "Music",
-    "Anime",
-    "Heroes",
-    "Sports",
-    "Riddles",
-    "Countries",
-    "Quotes",
-  ];
-
-  const [isCategoryLessThan3, setsIsCategoryLessThan3] = useState(true);
-  const [selectedCount, setSelectedCount] = useState(0);
 
   return (
     <div className="h-full w-full p-6 relative z-10 flex flex-col">
@@ -109,24 +118,17 @@ function Categories() {
         </div>
 
         <div>
-          <p className="text-start mt-8 text-(--white-text) text-xl">
-            Select difficulty:
-          </p>
-          <div className="mt-4 flex justify-between">
-            <Button label="Easy"></Button>
-            <Button label="Medium"></Button>
-            <Button label="Hard"></Button>
-          </div>
+          
         </div>
-
+          <Difficulty></Difficulty>
         <div>
           <p className="text-start mt-8 text-(--white-text) text-xl">
             Number of questions:
           </p>
           <div className="mt-4 flex justify-between">
-            <Button label="10"></Button>
+            {/* <Button label="10"></Button>
             <Button label="15"></Button>
-            <Button label="20"></Button>
+            <Button label="20"></Button> */}
           </div>
         </div>
       </div>
