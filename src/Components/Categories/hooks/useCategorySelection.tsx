@@ -1,20 +1,10 @@
 import { useEffect, useState } from "react";
-
-interface CategoriesSelected {
-  selectedCategories: string[];
-  difficulty: string;
-  numberOfQuestions: number;
-}
+import { useCategory } from "./useCategory";
 
 export function useCategorySelection(max: number) {
+  const { categoriesSelected, setCategoriesSelected } = useCategory();
   const [isCategoryLessThanMax, setsIsCategoryLessThanMax] = useState(true);
 
-  const [categoriesSelected, setCategoriesSelected] =
-    useState<CategoriesSelected>({
-      selectedCategories: [],
-      difficulty: "",
-      numberOfQuestions: 0,
-    });
 
   const selectedCategoriesLen = categoriesSelected.selectedCategories.length;
 

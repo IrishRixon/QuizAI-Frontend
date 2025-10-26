@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 import Difficulty from "./Difficulty";
 import { useCategorySelection } from "./hooks/useCategorySelection";
+import NumberOfQues from "./NumberOfQues";
 
 const categories = [
   "Food",
@@ -17,11 +18,8 @@ const categories = [
 ];
 
 function Categories() {
-  const { 
-    isCategoryLessThanMax, 
-    selectedCategoriesLen, 
-    toggleCategory 
-  } = useCategorySelection(3);
+  const { isCategoryLessThanMax, selectedCategoriesLen, toggleCategory } =
+    useCategorySelection(3);
 
   return (
     <div className="h-full w-full p-6 relative z-10 flex flex-col">
@@ -55,25 +53,18 @@ function Categories() {
                 label={item}
                 key={index}
                 canActive={isCategoryLessThanMax}
-                emitValue={(val: string) =>
-                  toggleCategory(val)
-                }
+                emitValue={(val: string) => toggleCategory(val)}
               ></Card>
             );
           })}
         </div>
 
-        <div></div>
-        <Difficulty></Difficulty>
         <div>
-          <p className="text-start mt-8 text-(--white-text) text-xl">
-            Number of questions:
-          </p>
-          <div className="mt-4 flex justify-between">
-            {/* <Button label="10"></Button>
-            <Button label="15"></Button>
-            <Button label="20"></Button> */}
-          </div>
+          <Difficulty></Difficulty>
+        </div>
+
+        <div>
+          <NumberOfQues></NumberOfQues>
         </div>
       </div>
 

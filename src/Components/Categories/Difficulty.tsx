@@ -1,10 +1,9 @@
 import Button from "./Button";
 import { useDifficultySelection } from "./hooks/useDifficultySelection";
 
-const difficultyLevel = ["Easy", "Medium", "Hard"];
 
 function Difficulty() {
-  const { selectedIndex, handleClicked } = useDifficultySelection();
+  const { selectedIndex, difficultyLvls, handleClicked } = useDifficultySelection();
 
   return (
     <>
@@ -12,7 +11,7 @@ function Difficulty() {
         Select difficulty:
       </p>
       <div className="mt-4 flex justify-between">
-        {difficultyLevel.map((item, index) => {
+        {difficultyLvls.map((item, index) => {
           return (
             <Button
               label={item}
