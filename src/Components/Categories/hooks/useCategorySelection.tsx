@@ -12,6 +12,11 @@ export function useCategorySelection(max: number) {
     setsIsCategoryLessThanMax(selectedCategoriesLen < max);
   }, [categoriesSelected.selectedCategories]);
 
+  useEffect(() => {
+    console.log(categoriesSelected, 'category selection');
+    
+  }, [categoriesSelected]);
+
   const toggleCategory = (val: string) => {
     setCategoriesSelected((prev) => {
       const isSelected = prev.selectedCategories.includes(val);

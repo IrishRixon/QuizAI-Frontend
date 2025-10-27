@@ -19,7 +19,7 @@ export function useDifficultySelection() {
     };
 
     useEffect(() => {
-        console.log(categoriesSelected);
+        console.log(categoriesSelected, 'number');
     }, [categoriesSelected])
 
 
