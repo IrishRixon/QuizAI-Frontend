@@ -1,34 +1,27 @@
-import { useEffect, useState } from "react";
-import { useCategory } from "./useCategory";
+import { useContext, useEffect, useState } from "react";
+import { CategoryContext } from "../../../Context/CategoryContext";
 
-const difficultyLvls = [
-    "Easy",
-    "Medium",
-    "Hard"
-];
+const difficultyLvls = ["Easy", "Medium", "Hard"];
 
 export function useDifficultySelection() {
-    const { categoriesSelected, setCategoriesSelected } = useCategory();
-    const [selectedIndex, setSelectedIndex] = useState(0);
+  // const { categoriesSelected, setCategoriesSelected } = useCategory();
+  const context = useContext(CategoryContext);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const handleClicked = (index: number) => {
-        setSelectedIndex(s => s = index);
-        setCategoriesSelected((prev) => {
-            return {...prev, difficulty: difficultyLvls[index]};
-        })        
-    };
+  const handleClicked = (index: number) => {
+    setSelectedIndex((s) => (s = index));
+    context!.setCategoriesSelected((prev) => {
+      return { ...prev, difficulty: difficultyLvls[index] };
+    });
+  };
 
-    useEffect(() => {
-        console.log(categoriesSelected, 'number');
-    }, [categoriesSelected])
+  useEffect(() => {
+    console.log(context!.categoriesSelected, "number");
+  }, [context!.categoriesSelected]);
 
-
-    return {
-        selectedIndex,
-        handleClicked,
-        difficultyLvls
-    };
+  return {
+    selectedIndex,
+    handleClicked,
+    difficultyLvls,
+  };
 }
-
-
-

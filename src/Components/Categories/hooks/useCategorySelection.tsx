@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useCategory } from "./useCategory";
+import { useContext, useEffect, useState } from "react";
+import { CategoryContext, type StateCat } from "../../../Context/CategoryContext";
 
 export function useCategorySelection(max: number) {
-  const { categoriesSelected, setCategoriesSelected } = useCategory();
-  const [isCategoryLessThanMax, setsIsCategoryLessThanMax] = useState(true);
+  const {categoriesSelected, setCategoriesSelected} = useContext(CategoryContext) as StateCat;
 
+  const [isCategoryLessThanMax, setsIsCategoryLessThanMax] = useState(true);
 
   const selectedCategoriesLen = categoriesSelected.selectedCategories.length;
 

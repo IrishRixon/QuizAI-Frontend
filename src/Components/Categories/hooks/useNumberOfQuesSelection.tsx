@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useCategory } from "./useCategory"
+import { useContext, useEffect, useState } from "react";
+import { CategoryContext, type StateCat } from "../../../Context/CategoryContext";
 
 const selection = [10, 20, 30];
 
 export function useNumberOfQuesSelection() {
-    const { categoriesSelected, setCategoriesSelected} = useCategory();
+    const {categoriesSelected, setCategoriesSelected} = useContext(CategoryContext) as StateCat;
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     const handleClicked = (index: number) => {

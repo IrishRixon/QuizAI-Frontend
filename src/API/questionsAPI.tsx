@@ -6,7 +6,7 @@ interface CategoriesSelected {
     numberOfQuestions: number;
   }
 
-export const getQuestions = async (body: CategoriesSelected) => {
+export const postCategories = async (body: CategoriesSelected) => {
     const response = axiosInstance.post("/questions", body);
     return response;  
 };

@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Card from "./Card";
 import Difficulty from "./Difficulty";
 import { useCategorySelection } from "./hooks/useCategorySelection";
 import NumberOfQues from "./NumberOfQues";
+import { postCategories } from "../../API/questionsAPI";
+import { CategoryContext } from "../../Context/CategoryContext";
 
 const categories = [
   "Food",
@@ -18,6 +20,7 @@ const categories = [
 ];
 
 function Categories() {
+  const context = useContext(CategoryContext);
   const { isCategoryLessThanMax, selectedCategoriesLen, toggleCategory } =
     useCategorySelection(3);
 
@@ -68,7 +71,7 @@ function Categories() {
         </div>
       </div>
 
-      <button className="h-[53px] w-full bg-(--accent-color) rounded text-(--white-text)">
+      <button className="h-[53px] w-full bg-(--accent-color) rounded text-(--white-text)" onClick={() => postCategories(context!.categoriesSelected)}>
         Start
       </button>
     </div>
