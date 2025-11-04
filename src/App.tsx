@@ -4,6 +4,7 @@ import LandingPage from "./Components/LandingPage/LandingPage";
 import Categories from "./Components/Categories/Categories";
 import { createContext, useState } from "react";
 import { CategoryContext } from "./Context/CategoryContext";
+import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -18,8 +19,8 @@ function App() {
   const [categoriesSelected, setCategoriesSelected] =
     useState<CategoriesSelected>({
       selectedCategories: [],
-      difficulty: "",
-      numberOfQuestions: 0,
+      difficulty: "easy",
+      numberOfQuestions: 10,
     });
     
   return (
@@ -32,6 +33,7 @@ function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/questions" element={<QuestionsPage />} />
               <Route path="*" element={<h1>Page not found</h1>} />
             </Routes>
           </div>

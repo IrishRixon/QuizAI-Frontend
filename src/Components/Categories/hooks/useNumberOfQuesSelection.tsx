@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CategoryContext, type StateCat } from "../../../Context/CategoryContext";
 
-const selection = [10, 20, 30];
+const selection = [10, 15, 20];
 
 export function useNumberOfQuesSelection() {
     const {categoriesSelected, setCategoriesSelected} = useContext(CategoryContext) as StateCat;
