@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { useFetchQuestions } from "../Categories/hooks/useFetchQuestions";
 import ChoiceButton from "./ChoiceButton";
+import { useTimer } from "../Categories/hooks/useTimer";
 
 function QuestionsPage() {
-  console.log("re-render");
 
   const questions = useFetchQuestions();
 
-  const currentQuestionIndex = 0;
-
   const [selectedAns, setSelectedAns] = useState(-1);
+  const { currentQuestionIndex, timer } = useTimer(
+    questions.length
+  );
+  console.log(questions.length);
+  
 
   if (questions.length === 0) {
     return (
@@ -24,23 +27,32 @@ function QuestionsPage() {
     );
   } else {
     return (
+
       <main className="p-6 w-full h-full z-10 relative flex flex-col">
         <div className="flex justify-end mb-6">
           <span className="text-(--white-text) text-xl justify-center flex items-center w-[50px] h-[50px] rounded-full bg-(--secondary-color)">
-            30
+            {timer}
           </span>
         </div>
 
         <section className="grow">
           <div className="h-[273px] w-full rounded shadow-md bg-(--secondary-color) p-2.5 flex items-center justify-center mb-9">
             <p className="text-(--white-text) text-xl text-center">
-              {questions[currentQuestionIndex].question}
+              {questions.length > currentQuestionIndex ? questions[currentQuestionIndex].question : ''}
             </p>
           </div>
 
           <section className="flex flex-col gap-2">
             {questions[currentQuestionIndex].choices.map((item, i) => {
-              return <ChoiceButton key={i} index={i} label={item} selectedAns={selectedAns} handleClick={(param) => setSelectedAns(param)}/>;
+              return (
+                <ChoiceButton
+                  key={i}
+                  index={i}
+                  label={item}
+                  selectedAns={selectedAns}
+                  handleClick={(param) => setSelectedAns(param)}
+                />
+              );
             })}
           </section>
         </section>

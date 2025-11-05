@@ -11,6 +11,11 @@ export function useFetchQuestions() {
     question: "fdgfdgdgdbdsbd",
     choices: ["Hello", "Hey"],
     answer: 1,
+  },
+  {
+    question: "fdgfdgdgdbdsbd 2",
+    choices: ["Hello", "Hey"],
+    answer: 1,
   }]);
   const { categoriesSelected, setCategoriesSelected } = useContext(
     CategoryContext
@@ -19,7 +24,7 @@ export function useFetchQuestions() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (hasFetched.current) return; // prevent double fetch in dev
+    if (hasFetched.current) return;
     hasFetched.current = true;
 
     console.log("Fetching");
@@ -35,7 +40,7 @@ export function useFetchQuestions() {
           }
       };
 
-     
+    //  fetching();
   }, [])
 
   return questions;
