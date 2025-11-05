@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFetchQuestions } from "../Categories/hooks/useFetchQuestions";
 import ChoiceButton from "./ChoiceButton";
 
@@ -7,6 +8,8 @@ function QuestionsPage() {
   const questions = useFetchQuestions();
 
   const currentQuestionIndex = 0;
+
+  const [selectedAns, setSelectedAns] = useState(-1);
 
   if (questions.length === 0) {
     return (
@@ -37,7 +40,7 @@ function QuestionsPage() {
 
           <section className="flex flex-col gap-2">
             {questions[currentQuestionIndex].choices.map((item, i) => {
-              return <ChoiceButton key={i} index={i} label={item} />;
+              return <ChoiceButton key={i} index={i} label={item} selectedAns={selectedAns} handleClick={(param) => setSelectedAns(param)}/>;
             })}
           </section>
         </section>
