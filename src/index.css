@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import 'primeicons/primeicons.css';
+        
 
 :root {
     --primary-color: #212D40;
