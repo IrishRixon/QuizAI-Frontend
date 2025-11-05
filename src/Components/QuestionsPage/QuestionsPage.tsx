@@ -1,22 +1,15 @@
-import { useState } from "react";
+import { useFetchQuestions } from "../Categories/hooks/useFetchQuestions";
 import ChoiceButton from "./ChoiceButton";
-import type { Question } from "../../Interface/Question";
 
 function QuestionsPage() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+
+  const questions = useFetchQuestions();
+
+  const currentQuestionIndex = 0;
 
   if (questions.length === 0) {
     return (
       <>
-      {setQuestions((prev) => {
-        return [
-          {
-            question: "What is the capital of Australia?",
-            choices: ["Sydney", "Melbourne", "Canberra", "Brisbane"],
-            answer: 2,
-          },
-        ];  
-      })}
         <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center text-center text-2xl text-(--text-color)">
           <i className="pi pi-spin pi-cog" style={{ fontSize: "5rem" }}></i>
           AI is generating questions...
@@ -40,10 +33,9 @@ function QuestionsPage() {
           </div>
 
           <section className="flex flex-col gap-2">
-            <ChoiceButton />
-            <ChoiceButton />
-            <ChoiceButton />
-            <ChoiceButton />
+            {questions[currentQuestionIndex].choices.map((item, i) => {
+              return <ChoiceButton key={i} index={i} label={item} />
+            })}
           </section>
         </section>
 
