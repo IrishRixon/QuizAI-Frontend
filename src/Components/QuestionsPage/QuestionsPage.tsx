@@ -2,6 +2,7 @@ import { useFetchQuestions } from "../Categories/hooks/useFetchQuestions";
 import ChoiceButton from "./ChoiceButton";
 
 function QuestionsPage() {
+  console.log("re-render");
 
   const questions = useFetchQuestions();
 
@@ -10,9 +11,11 @@ function QuestionsPage() {
   if (questions.length === 0) {
     return (
       <>
-        <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center text-center text-2xl text-(--text-color)">
-          <i className="pi pi-spin pi-cog" style={{ fontSize: "5rem" }}></i>
-          AI is generating questions...
+        <main className="flex items-center justify-center p-6 w-full h-full z-10 relative text-center text-md text-(--text-color)">
+          <div className="flex flex-col justify-center gap-6">
+            <i className="pi pi-spin pi-cog" style={{ fontSize: "5rem" }}></i>
+            <p>AI is generating questions...</p>
+          </div>
         </main>
       </>
     );
@@ -27,14 +30,14 @@ function QuestionsPage() {
 
         <section className="grow">
           <div className="h-[273px] w-full rounded shadow-md bg-(--secondary-color) p-2.5 flex items-center justify-center mb-9">
-            <p className="text-(--white-text) text-xl">
-              What is the capital of Australia?
+            <p className="text-(--white-text) text-xl text-center">
+              {questions[currentQuestionIndex].question}
             </p>
           </div>
 
           <section className="flex flex-col gap-2">
             {questions[currentQuestionIndex].choices.map((item, i) => {
-              return <ChoiceButton key={i} index={i} label={item} />
+              return <ChoiceButton key={i} index={i} label={item} />;
             })}
           </section>
         </section>

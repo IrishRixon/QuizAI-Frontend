@@ -4,7 +4,6 @@ import Card from "./Card";
 import Difficulty from "./Difficulty";
 import { useCategorySelection } from "./hooks/useCategorySelection";
 import NumberOfQues from "./NumberOfQues";
-import { postCategories } from "../../API/questionsAPI";
 import { CategoryContext } from "../../Context/CategoryContext";
 import { useNavigate } from "react-router";
 

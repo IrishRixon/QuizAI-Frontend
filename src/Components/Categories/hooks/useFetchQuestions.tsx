@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { Question } from "../../../Interface/Question";
 import {
   CategoryContext,
@@ -12,17 +12,27 @@ export function useFetchQuestions() {
     CategoryContext
   ) as StateCat;
 
-  const fetching = async () => {
-    try {
-        const { data } = await postCategories(categoriesSelected);
-        console.log(data);
-        
-        setQuestions(data);
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-      }
-  }
+  const hasFetched = useRef(false);
 
-  fetching();
+  useEffect(() => {
+    if (hasFetched.current) return; // prevent double fetch in dev
+    hasFetched.current = true;
+
+    console.log("Fetching");
+    
+    const fetching = async () => {
+        try {
+            const { data } = await postCategories(categoriesSelected);
+            console.log(data);
+            
+            setQuestions(data);
+          } catch (error) {
+            console.error("Error fetching questions:", error);
+          }
+      };
+
+     
+  }, [])
+
   return questions;
 }
