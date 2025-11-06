@@ -11,7 +11,6 @@ function QuestionsPage() {
   const { currentQuestionIndex, timer } = useTimer(
     questions.length
   );
-  console.log(questions.length);
   
 
   if (questions.length === 0) {

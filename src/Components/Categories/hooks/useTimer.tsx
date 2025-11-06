@@ -9,24 +9,31 @@ export function useTimer(numberOfQues: number) {
   let interval: number | undefined;
 
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
+    // if (hasRun.current) return;
+    // hasRun.current = true;
+    console.log("ran effect");
 
     if (runTimer) {
+      console.log("ran");
+      
       interval = setInterval(() => {
         setTimer((prev) => {
-          if (prev < 1) {
-            setCurrentQuestionIndex((c) => {
-              console.log(c + 1, 'timer');
-              return c + 1;
-            });
+          if (prev < 1 && currentQuestionIndex < numberOfQues-1) {
+              setCurrentQuestionIndex(currentQuestionIndex + 1);
             return timeLimit;
+          }
+          else if(currentQuestionIndex >= numberOfQues-1) {
+            console.log("run");
+            
+            setRunTimer(false);
+            clearInterval(interval);
           }
 
           return prev - 1;
         });
       }, 1000);
-      setRunTimer(false);
+
+      
     }
   }, []);
 
