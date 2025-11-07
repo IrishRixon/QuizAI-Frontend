@@ -1,44 +1,43 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 export function useTimer(numberOfQues: number) {
   const timeLimit = 30;
-  const [runTimer, setRunTimer] = useState(true);
+  const [nextQuestion, setNextQuestion] = useState(false);
   const [timer, setTimer] = useState(timeLimit);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const hasRun = useRef(false);
-  let interval: number | undefined;
+  const navigation = useNavigate();
 
   useEffect(() => {
-    // if (hasRun.current) return;
-    // hasRun.current = true;
+    if (hasRun.current) return;
+    hasRun.current = true;
     console.log("ran effect");
 
-    if (runTimer) {
-      console.log("ran");
-      
-      interval = setInterval(() => {
-        setTimer((prev) => {
-          if (prev < 1 && currentQuestionIndex < numberOfQues-1) {
-              setCurrentQuestionIndex(currentQuestionIndex + 1);
-            return timeLimit;
-          }
-          else if(currentQuestionIndex >= numberOfQues-1) {
-            console.log("run");
-            
-            setRunTimer(false);
-            clearInterval(interval);
-          }
-
+    let interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev < 1) {
+          setNextQuestion(true);
+          return timeLimit;
+        } else {
+          setNextQuestion(false);
           return prev - 1;
-        });
-      }, 1000);
-
-      
-    }
+        }
+      });
+    }, 1000);
   }, []);
 
+  useEffect(() => {
+    if (nextQuestion && currentQuestionIndex < numberOfQues - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+    if(currentQuestionIndex >= numberOfQues - 1) {
+      navigation("/categories");
+    }
+  }, [nextQuestion]);
+
   const resetTimer = () => {
-    setTimer((prev) => (timeLimit));
+    setTimer((prev) => timeLimit);
   };
 
   return {
