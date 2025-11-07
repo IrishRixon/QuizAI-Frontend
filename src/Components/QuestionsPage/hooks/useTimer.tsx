@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-export function useTimer(numberOfQues: number) {
+export function useTimer(numberOfQues: number, isTimerRunning: boolean) {
   const timeLimit = 30;
   const [nextQuestion, setNextQuestion] = useState(false);
   const [timer, setTimer] = useState(timeLimit);
@@ -14,25 +14,29 @@ export function useTimer(numberOfQues: number) {
     hasRun.current = true;
     console.log("ran effect");
 
-    let interval = setInterval(() => {
-      setTimer((prev) => {
-        if (prev < 1) {
-          setNextQuestion(true);
-          return timeLimit;
-        } else {
-          setNextQuestion(false);
-          return prev - 1;
-        }
-      });
-    }, 1000);
-  }, []);
+    if(isTimerRunning) {
+      console.log("started timer");
+      
+      let interval = setInterval(() => {
+        setTimer((prev) => {
+          if (prev < 1) {
+            setNextQuestion(true);
+            return timeLimit;
+          } else {
+            setNextQuestion(false);
+            return prev - 1;
+          }
+        });
+      }, 1000);
+    }
+  }, [isTimerRunning]);
 
   useEffect(() => {
     if (nextQuestion && currentQuestionIndex < numberOfQues - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
     if(currentQuestionIndex >= numberOfQues - 1) {
-      navigation("/categories");
+      // navigation("/categories");
     }
   }, [nextQuestion]);
 
@@ -43,5 +47,6 @@ export function useTimer(numberOfQues: number) {
   return {
     timer,
     currentQuestionIndex,
+    setCurrentQuestionIndex,
   };
 }

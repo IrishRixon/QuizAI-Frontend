@@ -5,6 +5,7 @@ import Categories from "./Components/Categories/Categories";
 import { createContext, useState } from "react";
 import { CategoryContext } from "./Context/CategoryContext";
 import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
+import { ScoreContext } from "./Context/ScoreContext";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -12,32 +13,33 @@ interface CategoriesSelected {
   numberOfQuestions: number;
 }
 
-
-
 function App() {
-  
   const [categoriesSelected, setCategoriesSelected] =
     useState<CategoriesSelected>({
       selectedCategories: [],
       difficulty: "easy",
       numberOfQuestions: 10,
     });
-    
+
+    const [score, setScore] = useState<number>(0);
+
   return (
     <>
-      <CategoryContext value={{categoriesSelected, setCategoriesSelected}}>
-        <BrowserRouter>
-          <div className="h-screen w-screen bg-(--primary-color) relative">
-            <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
+      <CategoryContext value={{ categoriesSelected, setCategoriesSelected }}>
+        <ScoreContext value={{score, setScore}}>
+          <BrowserRouter>
+            <div className="h-screen w-screen bg-(--primary-color) relative">
+              <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
 
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/questions" element={<QuestionsPage />} />
-              <Route path="*" element={<h1>Page not found</h1>} />
-            </Routes>
-          </div>
-        </BrowserRouter>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/questions" element={<QuestionsPage />} />
+                <Route path="*" element={<h1>Page not found</h1>} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </ScoreContext>
       </CategoryContext>
     </>
   );

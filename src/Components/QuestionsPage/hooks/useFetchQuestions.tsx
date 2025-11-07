@@ -7,16 +7,7 @@ import {
 import { postCategories } from "../../../API/questionsAPI";
 
 export function useFetchQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([{
-    question: "fdgfdgdgdbdsbd",
-    choices: ["Hello", "Hey"],
-    answer: 1,
-  },
-  {
-    question: "fdgfdgdgdbdsbd 2",
-    choices: ["Hello", "Hey"],
-    answer: 1,
-  }]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const { categoriesSelected, setCategoriesSelected } = useContext(
     CategoryContext
   ) as StateCat;
@@ -40,7 +31,7 @@ export function useFetchQuestions() {
           }
       };
 
-    //  fetching();
+     fetching();
   }, [])
 
   return questions;
