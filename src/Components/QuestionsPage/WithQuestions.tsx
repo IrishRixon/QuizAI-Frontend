@@ -71,9 +71,10 @@ function WithQuestions({ questions }: Props) {
 
             if (updated >= questions.length) {
               setSelectedAns(-1);
-              return updated;
+              navigate("/score");
+              return prev;
             }
-            return prev;
+            return updated;
           });
         }}
       >

@@ -6,6 +6,7 @@ import { createContext, useState } from "react";
 import { CategoryContext } from "./Context/CategoryContext";
 import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
 import { ScoreContext } from "./Context/ScoreContext";
+import Score from "./Components/Score/Score";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/questions" element={<QuestionsPage />} />
+                <Route path="/score" element={<Score />} />
                 <Route path="*" element={<h1>Page not found</h1>} />
               </Routes>
             </div>
