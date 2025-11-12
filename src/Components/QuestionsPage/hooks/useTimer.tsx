@@ -44,5 +44,6 @@ export function useTimer(numberOfQues: number) {
     timer,
     currentQuestionIndex,
     setCurrentQuestionIndex,
+    setTimer
   };
 }

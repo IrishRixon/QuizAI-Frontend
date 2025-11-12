@@ -15,7 +15,7 @@ interface Props {
 
 function WithQuestions({ questions }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
-  const { currentQuestionIndex, timer, setCurrentQuestionIndex } = useTimer(
+  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } = useTimer(
     questions.length
   );
   const { score, setScore } = useContext(ScoreContext) as ScoreContextType;
@@ -74,6 +74,8 @@ function WithQuestions({ questions }: Props) {
               navigate("/score");
               return prev;
             }
+            setSelectedAns(-1);
+            setTimer(30);
             return updated;
           });
         }}
