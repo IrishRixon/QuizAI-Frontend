@@ -7,15 +7,15 @@ function LandingPage() {
         <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
         {/*Logo start*/}
         <div className="relative z-10 pt-28 flex justify-center">
-          <div className="relative w-[192px] h-[152px] flex items-center">
-            <h1 className="font-[Bungee] text-5xl text-(--text-color) title inline relative w-full">
+          <div className="relative w-[192px] h-[152px] flex items-center sm:w-[300px]">
+            <h1 className="font-[Bungee] text-5xl sm:text-7xl text-(--text-color) title inline relative w-full">
               <span className="relative z-20">Quiz</span>
-              <span className="absolute bottom-5 left-32 secondary-title text-(--secondary-color) z-10">
+              <span className="absolute bottom-5 left-32 sm:left-44 secondary-title text-(--secondary-color) z-10">
                 AI
               </span>
             </h1>
             {/*Blob*/}
-            <div className="blob absolute h-[192px] w-[192px] bg-[#4C578E] rounded-full blur-3xl"></div>
+            <div className="blob absolute h-[192px] w-[192px] bg-[#4C578E] sm:h-[300px] sm:w-[300px] rounded-full blur-3xl"></div>
           </div>
         </div>
         {/*Logo end*/}

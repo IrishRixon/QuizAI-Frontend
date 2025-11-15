@@ -11,7 +11,7 @@ function Score() {
     const navigate = useNavigate();
     
   return (
-    <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center items-center gap-8">
+    <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center items-center gap-16">
       <div className="flex flex-col justify-center items-center">
       <ConfettiExplosion />
         <p className="text-(--white-text)">Your score is: </p>

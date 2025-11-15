@@ -1,3 +1,5 @@
+import { Ripple } from "primereact/ripple";
+
 interface Props {
   index: number;
   label: string;
@@ -8,12 +10,13 @@ interface Props {
 function ChoiceButton({ index, label, handleClick, selectedAns }: Props) {
   return (
     <button
-      className={`w-full border border-(--secondary-color) p-4 rounded ${
+      className={`p-ripple w-full border border-(--secondary-color) p-4 rounded ${
         selectedAns === index && "bg-(--secondary-color)"
       }`}
       onClick={() => handleClick(index)}
     >
       <p className="text-xl text-(--text-color) text-center">{label}</p>
+      <Ripple />
     </button>
   );
 }

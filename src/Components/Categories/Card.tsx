@@ -1,3 +1,4 @@
+import { Ripple } from "primereact/ripple";
 import { useState } from "react";
 
 interface CardProps {
@@ -13,7 +14,7 @@ function Card(props: CardProps) {
 
   return (
     <button
-      className={`w-[100px] h-[85px] border border-(--secondary-color) rounded p-2 flex flex-col gap-4 items-center ${
+      className={`p-ripple w-[100px] h-[85px] border border-(--secondary-color) rounded p-2 flex flex-col gap-4 items-center ${
         active && "bg-(--secondary-color)"
       }`}
       onClick={() => {
@@ -25,6 +26,7 @@ function Card(props: CardProps) {
         {props.label}
       </p>
       <img className="w-[30px] h-[28px]" src={props.image} alt={props.alt} />
+      <Ripple />
     </button>
   );
 }

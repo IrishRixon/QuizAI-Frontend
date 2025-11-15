@@ -7,6 +7,8 @@ import { CategoryContext } from "./Context/CategoryContext";
 import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
 import { ScoreContext } from "./Context/ScoreContext";
 import Score from "./Components/Score/Score";
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import type { APIOptions } from "primereact/api"; 
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -22,10 +24,16 @@ function App() {
       numberOfQuestions: 10,
     });
 
+    const value: APIOptions = {
+      appendTo: 'self',
+      ripple: true,
+  };
+
     const [score, setScore] = useState<number>(0);
 
   return (
     <>
+    <PrimeReactProvider value={value}>
       <CategoryContext value={{ categoriesSelected, setCategoriesSelected }}>
         <ScoreContext value={{score, setScore}}>
           <BrowserRouter>
@@ -43,6 +51,7 @@ function App() {
           </BrowserRouter>
         </ScoreContext>
       </CategoryContext>
+      </PrimeReactProvider>
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
 import { checkAnswer } from "../../Utils/checkAnswer";
 import type { Question } from "../../Interface/Question";
 import { useNavigate } from "react-router";
+import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 
 interface Props {
   questions: Question[];
@@ -19,10 +20,13 @@ function WithQuestions({ questions }: Props) {
     questions.length
   );
   const { score, setScore } = useContext(ScoreContext) as ScoreContextType;
+
+  const isSubmitBtnDisabled = selectedAns == -1;
+
   const navigate = useNavigate();
 
   return (
-    <main className="p-6 w-full h-full z-10 relative flex flex-col">
+    <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       <div className="flex justify-end mb-6">
         <span className="text-(--white-text) text-xl justify-center flex items-center w-[50px] h-[50px] rounded-full bg-(--secondary-color)">
           {timer}
@@ -38,7 +42,7 @@ function WithQuestions({ questions }: Props) {
           </p>
         </div>
 
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-2 overflow-y-auto pb-4">
           {questions[currentQuestionIndex].choices.map((item, i) => {
             return (
               <ChoiceButton
@@ -54,7 +58,8 @@ function WithQuestions({ questions }: Props) {
       </section>
 
       <button
-        className="h-[53px] w-full bg-(--accent-color) rounded text-(--white-text)"
+        className={`h-[53px] w-full rounded text-(--white-text) border border-(--accent-color) ${!isSubmitBtnDisabled && 'bg-(--accent-color)'}`}
+        disabled={isSubmitBtnDisabled}
         onClick={() => {
           if (
             checkAnswer(selectedAns, questions[currentQuestionIndex].answer)
