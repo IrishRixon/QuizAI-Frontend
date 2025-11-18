@@ -1,7 +1,5 @@
-import { useContext } from "react";
 import Button from "./Button";
 import { useDifficultySelection } from "./hooks/useDifficultySelection";
-import { CategoryContext } from "../../Context/CategoryContext";
 
 
 function Difficulty() {

@@ -9,7 +9,7 @@ export function useDifficultySelection() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClicked = (index: number) => {
-    setSelectedIndex((s) => (s = index));
+    setSelectedIndex(index);
     context!.setCategoriesSelected((prev) => {
       return { ...prev, difficulty: difficultyLvls[index] };
     });

@@ -8,7 +8,6 @@ import {
 import { checkAnswer } from "../../Utils/checkAnswer";
 import type { Question } from "../../Interface/Question";
 import { useNavigate } from "react-router";
-import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 
 interface Props {
   questions: Question[];
@@ -19,7 +18,7 @@ function WithQuestions({ questions }: Props) {
   const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } = useTimer(
     questions.length
   );
-  const { score, setScore } = useContext(ScoreContext) as ScoreContextType;
+  const { setScore } = useContext(ScoreContext) as ScoreContextType;
 
   const isSubmitBtnDisabled = selectedAns == -1;
 

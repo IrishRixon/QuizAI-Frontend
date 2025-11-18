@@ -6,17 +6,10 @@ import Button from "./Button";
 import { useNavigate } from "react-router";
 
 function Score() {
-    const { score, setScore} = useContext(ScoreContext) as ScoreContextType;
-    const { categoriesSelected, setCategoriesSelected } = useContext(CategoryContext) as StateCat;
+    const { score} = useContext(ScoreContext) as ScoreContextType;
+    const { categoriesSelected } = useContext(CategoryContext) as StateCat;
     const navigate = useNavigate();
     
-    const playAgain = () => {
-      navigate("/categories");
-      setScore(0);
-      setCategoriesSelected((prev) => {
-        return {...prev, selectedCategories: []}
-      });
-    }
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center items-center gap-16">
       <div className="flex flex-col justify-center items-center">
@@ -26,7 +19,7 @@ function Score() {
       </div>
       
       <div className="flex flex-col gap-4">
-      <Button label="Play Again" handleClick={() => playAgain()}></Button>
+      <Button label="Play Again" handleClick={() => navigate("/categories")}></Button>
       <Button label="Main Menu" handleClick={() => navigate("/")}></Button>
       </div>
         

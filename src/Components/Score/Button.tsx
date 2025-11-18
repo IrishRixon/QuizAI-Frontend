@@ -1,5 +1,3 @@
-import { Ripple } from "primereact/ripple";
-
 interface Props {
   label: string;
   handleClick: () => void;
@@ -7,10 +5,9 @@ interface Props {
 
 function Button({ label, handleClick }: Props) {
   return (
-    <button className="h-[56px] w-[200px] flex p-4 text-(--text-color) border border-(--secondary-color) rounded justify-center p-ripple"
+    <button className="h-[56px] w-[200px] flex p-4 text-(--text-color) border border-(--secondary-color) rounded justify-center"
     onClick={handleClick}>
       {label}
-      <Ripple />
     </button>
   );
 }
