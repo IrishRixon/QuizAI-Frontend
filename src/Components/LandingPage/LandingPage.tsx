@@ -3,8 +3,8 @@ import Button from "./Button";
 function LandingPage() {
   return (
     <>
-      <div className="h-screen w-screen bg-(--primary-color) relative">
-        <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
+      <div className="h-full w-full bg-(--primary-color) relative">
+        <div className="absolute h-full w-full bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
         {/*Logo start*/}
         <div className="relative z-10 pt-28 flex justify-center">
           <div className="relative w-[192px] h-[152px] flex items-center sm:w-[300px]">

@@ -9,10 +9,10 @@ function NumberOfQues() {
 
   return (
     <>
-      <p className="text-start mt-8 text-(--white-text) text-xl">
+      <p className="text-start mt-8 mb-2 text-(--white-text) text-xl">
         Number of questions:
       </p>
-      <div className="mt-4 flex justify-between">
+      <div className=" flex justify-between">
         {selection.map((item, index) => {
            return <Button
             label={`${item}`}

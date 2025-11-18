@@ -37,7 +37,7 @@ function App() {
       <CategoryContext value={{ categoriesSelected, setCategoriesSelected }}>
         <ScoreContext value={{score, setScore}}>
           <BrowserRouter>
-            <div className="h-screen w-screen bg-(--primary-color) relative">
+            <div className="h-full w-full bg-(--primary-color) relative">
               <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
 
               <Routes>

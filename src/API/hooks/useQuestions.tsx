@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getQuestions } from "../questionsAPI";
+import { postCategories } from "../questionsAPI";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -8,25 +8,35 @@ interface CategoriesSelected {
 }
 
 interface Question {
-    question: string;
-    choices: string[];
-    answer: number;
+  question: string;
+  choices: string[];
+  answer: number;
 }
 
 export function useQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      question: "fsdfasjfh",
+      choices: ["asdfsad", "asdfsad", "asdfsad", "asdfsad"],
+      answer: 2,
+    },
+    {
+      question: "fsdfasjfh",
+      choices: ["asdfsad", "asdfsad", "asdfsad", "asdfsad"],
+      answer: 2,
+    },
+  ]);
 
   const fetchQuestions = async (categories: CategoriesSelected) => {
     try {
-      const response = await getQuestions(categories);
+      const response = await postCategories(categories);
       setQuestions((prev) => {
-        return [...prev, response.data]
-      })
+        return [...prev, response.data];
+      });
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   };
 
-  return { questions, fetchQuestions }
-  
+  return { questions, fetchQuestions };
 }

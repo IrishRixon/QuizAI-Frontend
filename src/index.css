@@ -20,11 +20,13 @@
     src: url("/font/BreeSerif-Regular.ttf");
 }
 
-html, body {
+#root, html, body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Bree-serif";
+    height: 100vh;
+    width: 100vw;
 }
 
 .title {
