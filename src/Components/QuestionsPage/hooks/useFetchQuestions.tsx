@@ -14,7 +14,7 @@ export function useFetchQuestions() {
       choices: ["fsdjfs", "sdfjksaf", "fsdjfs", "sdfjksaf"]
     }
   ]);
-  const { categoriesSelected, setCategoriesSelected } = useContext(
+  const { categoriesSelected } = useContext(
     CategoryContext
   ) as StateCat;
 

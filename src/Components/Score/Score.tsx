@@ -6,7 +6,7 @@ import Button from "./Button";
 import { useNavigate } from "react-router";
 
 function Score() {
-    const { score, setScore} = useContext(ScoreContext) as ScoreContextType;
+    const { score} = useContext(ScoreContext) as ScoreContextType;
     const { categoriesSelected } = useContext(CategoryContext) as StateCat;
     const navigate = useNavigate();
     

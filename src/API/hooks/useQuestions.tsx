@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getQuestions } from "../questionsAPI";
+import { postCategories } from "../questionsAPI";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -18,7 +18,7 @@ export function useQuestions() {
 
   const fetchQuestions = async (categories: CategoriesSelected) => {
     try {
-      const response = await getQuestions(categories);
+      const response = await postCategories(categories);
       setQuestions((prev) => {
         return [...prev, response.data]
       })

@@ -2,12 +2,12 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
 import LandingPage from "./Components/LandingPage/LandingPage";
 import Categories from "./Components/Categories/Categories";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import { CategoryContext } from "./Context/CategoryContext";
 import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
 import { ScoreContext } from "./Context/ScoreContext";
 import Score from "./Components/Score/Score";
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { PrimeReactProvider } from 'primereact/api';
 import type { APIOptions } from "primereact/api"; 
 
 interface CategoriesSelected {
