@@ -29,8 +29,8 @@ export function useTimer(numberOfQues: number) {
     if (nextQuestion && currentQuestionIndex < numberOfQues - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
-    if (currentQuestionIndex >= numberOfQues - 1) {
-      // navigation("/categories");
+    else if (nextQuestion && currentQuestionIndex == numberOfQues - 1) {
+      navigation("/score");
     }
   }, [nextQuestion]);
 
