@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 export function useTimer(numberOfQues: number) {
   const timeLimit = 30;
@@ -6,6 +7,7 @@ export function useTimer(numberOfQues: number) {
   const [timer, setTimer] = useState(timeLimit);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const hasRun = useRef(false);
+  const navigation = useNavigate();
 
   useEffect(() => {
     if (hasRun.current) return;
