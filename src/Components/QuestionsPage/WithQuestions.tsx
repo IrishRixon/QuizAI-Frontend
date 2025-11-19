@@ -8,6 +8,7 @@ import {
 import { checkAnswer } from "../../Utils/checkAnswer";
 import type { Question } from "../../Interface/Question";
 import { useNavigate } from "react-router";
+import { useStoreQuestions } from "./hooks/useStoreQuestions";
 
 interface Props {
   questions: Question[];
@@ -15,13 +16,15 @@ interface Props {
 
 function WithQuestions({ questions }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
+  const navigate = useNavigate();
+
   const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } =
     useTimer(questions.length);
+  useStoreQuestions(questions);
+
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
 
   const isSubmitBtnDisabled = selectedAns == -1;
-
-  const navigate = useNavigate();
 
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
