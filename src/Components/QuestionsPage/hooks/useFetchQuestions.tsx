@@ -7,7 +7,12 @@ import {
 import { postCategories } from "../../../API/questionsAPI";
 
 export function useFetchQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([{
+    answer: 0,
+    choices: ["fskdj", "fhsdfjka", "fkjsdhfa", "skfja"],
+    question: "fsdjkhf?",
+  },
+]);
   const { categoriesSelected, setCategoriesSelected } = useContext(
     CategoryContext
   ) as StateCat;
