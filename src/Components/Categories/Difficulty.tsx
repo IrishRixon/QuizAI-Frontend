@@ -1,16 +1,16 @@
 import Button from "./Button";
 import { useDifficultySelection } from "./hooks/useDifficultySelection";
 
-
 function Difficulty() {
-  const { selectedIndex, difficultyLvls, handleClicked } = useDifficultySelection();
+  const { selectedIndex, difficultyLvls, handleClicked } =
+    useDifficultySelection();
 
   return (
     <>
       <p className="text-start mt-8 mb-2 text-(--white-text) text-xl">
         Select difficulty:
       </p>
-      <div className=" flex justify-between">
+      <div className=" flex justify-between gap-4">
         {difficultyLvls.map((item, index) => {
           return (
             <Button

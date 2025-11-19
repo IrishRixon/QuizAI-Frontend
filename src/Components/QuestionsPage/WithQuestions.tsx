@@ -15,9 +15,8 @@ interface Props {
 
 function WithQuestions({ questions }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
-  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } = useTimer(
-    questions.length
-  );
+  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } =
+    useTimer(questions.length);
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
 
   const isSubmitBtnDisabled = selectedAns == -1;
@@ -57,7 +56,9 @@ function WithQuestions({ questions }: Props) {
       </section>
 
       <button
-        className={`h-[53px] w-full rounded text-(--white-text) border border-(--accent-color) ${!isSubmitBtnDisabled && 'bg-(--accent-color)'}`}
+        className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) ${
+          !isSubmitBtnDisabled && "bg-(--accent-color)"
+        }`}
         disabled={isSubmitBtnDisabled}
         onClick={() => {
           if (

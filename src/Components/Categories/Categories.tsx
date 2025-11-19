@@ -81,7 +81,7 @@ function Categories() {
       </div>
 
       <button
-        className={`h-[53px] w-full  rounded text-(--white-text) border border-(--accent-color) p-ripple ${
+        className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) p-ripple ${
           !isStartBtnDisabled && "bg-(--accent-color)"
         }`}
         onClick={() => navigate("/questions")}
