@@ -10,6 +10,8 @@ export function useStoreQuestions(param: Question[]) {
     hasRun.current = true;
     
     const store = async () => {
+      console.log("storing");
+      
       await storeQuestions(param);
     };
 

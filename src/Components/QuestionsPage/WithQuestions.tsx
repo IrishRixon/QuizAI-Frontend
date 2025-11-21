@@ -12,19 +12,23 @@ import { useStoreQuestions } from "./hooks/useStoreQuestions";
 
 interface Props {
   questions: Question[];
+  isFromDB: boolean;
 }
 
-function WithQuestions({ questions }: Props) {
+function WithQuestions({ questions, isFromDB }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
   const navigate = useNavigate();
 
   const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } =
     useTimer(questions.length);
-  useStoreQuestions(questions);
 
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
 
   const isSubmitBtnDisabled = selectedAns == -1;
+
+  if(!isFromDB) {
+    useStoreQuestions(questions);
+  }
 
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
