@@ -35,7 +35,7 @@ export function useFetchQuestions() {
         setQuestions(result.data);
       } catch (error) {
         console.log(error, "error fetch");
-        toast.show({ severity: 'info', summary: 'Getting questions from Database', detail: "AI failed to generate questions", life: 5000 });
+        toast?.current?.show({ severity: 'info', summary: 'Getting questions from Database', detail: "AI failed to generate questions", life: 5000 });
         result = await getDataToDatabase(categoriesSelected);
         setIsFromDb(true);
         setQuestions(result.data);
