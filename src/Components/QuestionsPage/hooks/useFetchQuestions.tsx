@@ -16,7 +16,7 @@ export function useFetchQuestions() {
   const { categoriesSelected, setCategoriesSelected } = useContext(
     CategoryContext
   ) as StateCat;
-  const toast = useContext(ToastContext) as Toast;
+  const toast = useContext(ToastContext);
 
 
   const hasFetched = useRef(false);
