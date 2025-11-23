@@ -1,6 +1,13 @@
+import { useContext } from "react";
+import { ToastContext } from "../../Context/Toast";
 import Button from "./Button";
+import { useNavigate } from "react-router";
+import type { Toast } from "primereact/toast";
 
 function LandingPage() {
+  const toast = useContext(ToastContext);
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="h-full w-full bg-(--primary-color) relative">
@@ -21,8 +28,21 @@ function LandingPage() {
         {/*Logo end*/}
 
         <div className="w-full flex items-center flex-col gap-4 mt-[243px]">
-          <Button txt="Single Player"></Button>
-          <Button txt="MultiPlayer"></Button>
+          <Button
+            txt="Single Player"
+            handleClicked={() => navigate("/categories")}
+          ></Button>
+          <Button
+            txt="MultiPlayer"
+            handleClicked={() => {
+              return toast?.current?.show({
+                severity: "info",
+                summary: "In development",
+                detail: "Multiplayer is in the process of development",
+                life: 5000,
+              });
+            }}
+          ></Button>
         </div>
       </div>
     </>
