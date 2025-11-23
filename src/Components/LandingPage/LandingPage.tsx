@@ -35,7 +35,7 @@ function LandingPage() {
           <Button
             txt="MultiPlayer"
             handleClicked={() => {
-              return toast?.current?.show({
+               toast?.current?.show({
                 severity: "info",
                 summary: "In development",
                 detail: "Multiplayer is in the process of development",
