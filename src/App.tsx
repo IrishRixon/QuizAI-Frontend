@@ -2,13 +2,16 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
 import LandingPage from "./Components/LandingPage/LandingPage";
 import Categories from "./Components/Categories/Categories";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CategoryContext } from "./Context/CategoryContext";
 import QuestionsPage from "./Components/QuestionsPage/QuestionsPage";
 import { ScoreContext } from "./Context/ScoreContext";
 import Score from "./Components/Score/Score";
-import { PrimeReactProvider } from 'primereact/api';
-import type { APIOptions } from "primereact/api"; 
+import { PrimeReactProvider } from "primereact/api";
+import type { APIOptions } from "primereact/api";
+import { Toast } from "primereact/toast";
+import { ToastContext } from "./Context/Toast";
+import { Button } from "primereact/button";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -24,33 +27,36 @@ function App() {
       numberOfQuestions: 10,
     });
 
-    const value: APIOptions = {
-      appendTo: 'self',
-      ripple: true,
+  const value: APIOptions = {
+    appendTo: "self",
+    ripple: true,
   };
 
-    const [score, setScore] = useState<number>(0);
+  const [score, setScore] = useState<number>(0);
+  const toast = useRef<Toast>(null);
 
   return (
     <>
-    <PrimeReactProvider value={value}>
-      <CategoryContext value={{ categoriesSelected, setCategoriesSelected }}>
-        <ScoreContext value={{score, setScore}}>
-          <BrowserRouter>
-            <div className="h-dvh w-full bg-(--primary-color) relative">
-              <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
-
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/questions" element={<QuestionsPage />} />
-                <Route path="/score" element={<Score />} />
-                <Route path="*" element={<h1>Page not found</h1>} />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </ScoreContext>
-      </CategoryContext>
+      <PrimeReactProvider value={value}>
+        <CategoryContext value={{ categoriesSelected, setCategoriesSelected }}>
+          <ScoreContext value={{ score, setScore }}>
+            <ToastContext value={toast}>
+              <BrowserRouter>
+                <div className="h-dvh w-full bg-(--primary-color) relative">
+                  <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
+                  <Toast ref={toast} position="top-center" />
+                  <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/categories" element={<Categories />} />
+                    <Route path="/questions" element={<QuestionsPage />} />
+                    <Route path="/score" element={<Score />} />
+                    <Route path="*" element={<h1>Page not found</h1>} />
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </ToastContext>
+          </ScoreContext>
+        </CategoryContext>
       </PrimeReactProvider>
     </>
   );
