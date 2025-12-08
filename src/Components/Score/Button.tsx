@@ -3,7 +3,7 @@ interface Props {
   handleClick: () => void;
 }
 
-function Button({ label, handleClick }: Props) {
+function CustomButton({ label, handleClick }: Props) {
   return (
     <button className="h-[56px] w-[200px] flex p-4 text-(--text-color) border border-(--secondary-color) rounded justify-center"
     onClick={handleClick}>
@@ -12,4 +12,4 @@ function Button({ label, handleClick }: Props) {
   );
 }
 
-export default Button;
+export default CustomButton;
