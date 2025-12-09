@@ -3,12 +3,12 @@ import NoQuestions from "./NoQuestions";
 import WithQuestions from "./WithQuestions";
 
 function QuestionsPage() {
-  const {questions, isFromDB} = useFetchQuestions();
+  const {questions, isFromDB, changeChosen} = useFetchQuestions();
 
   if (questions.length === 0) {
     return <NoQuestions />;
   } else {
-    return <WithQuestions questions={questions} isFromDB={isFromDB}></WithQuestions>;
+    return <WithQuestions questions={questions} isFromDB={isFromDB} changeChosen={changeChosen}></WithQuestions>;
   }
 }
 

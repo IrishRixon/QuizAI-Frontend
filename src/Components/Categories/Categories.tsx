@@ -28,7 +28,7 @@ function Categories() {
   const isStartBtnDisabled = categoriesSelected.selectedCategories.length == 0;
 
   return (
-    <div className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
+    <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       
       <div className="flex justify-between">
         <button
@@ -51,7 +51,7 @@ function Categories() {
 
         <p className="text-end mt-4 text-(--white-text) text-xl">
         selected: {selectedCategoriesLen}/3
-      </p>
+        </p>
       </div>
 
 
@@ -90,7 +90,7 @@ function Categories() {
         Start
         <Ripple />
       </button>
-    </div>
+    </main>
   );
 }
 

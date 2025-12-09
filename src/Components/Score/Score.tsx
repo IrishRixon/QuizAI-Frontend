@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import {
   ScoreContext,
   type ScoreContextType,
@@ -6,9 +6,8 @@ import {
 import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 import ConfettiExplosion from "react-confetti-explosion";
 import CustomButton from "./Button";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Button } from "primereact/button";
-import { Tooltip } from "primereact/tooltip";
 
 function Score() {
   const { score, setScore } = useContext(ScoreContext) as ScoreContextType;
@@ -16,6 +15,8 @@ function Score() {
     CategoryContext
   ) as StateCat;
   const navigate = useNavigate();
+  const location = useLocation();
+  const questions = location.state?.questions ?? [];
 
   const playAgain = () => {
     navigate("/categories");
@@ -24,6 +25,11 @@ function Score() {
       return { ...prev, selectedCategories: [] };
     });
   };
+
+  useEffect(() => {
+    console.log(questions);
+  })
+
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col justify-center items-center gap-16">
       <div className="relative flex flex-col justify-center items-center">
@@ -36,6 +42,7 @@ function Score() {
             text
             severity="secondary"
             aria-label="Bookmark"
+            onClick={() => navigate("/viewAnswers", { state: { questions: questions } })}
           />
         </div>
         <ConfettiExplosion />

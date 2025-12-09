@@ -12,6 +12,7 @@ import type { APIOptions } from "primereact/api";
 import { Toast } from "primereact/toast";
 import { ToastContext } from "./Context/Toast";
 import { Button } from "primereact/button";
+import ViewAnswers from "./Components/ViewAnswers/ViewAnswers";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -50,7 +51,8 @@ function App() {
                     <Route path="/categories" element={<Categories />} />
                     <Route path="/questions" element={<QuestionsPage />} />
                     <Route path="/score" element={<Score />} />
-                    <Route path="*" element={<h1>Page not found</h1>} />
+                    <Route path="/viewAnswers" element={<ViewAnswers />} />
+                    <Route path="*" element={<h1 className="h-full w-full flex items-center justify-center sm:text-xl md:text-2xl lg:text-4xl">404 Page not found</h1>} />
                   </Routes>
                 </div>
               </BrowserRouter>

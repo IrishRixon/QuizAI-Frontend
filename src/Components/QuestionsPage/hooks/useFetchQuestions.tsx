@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import type { Question } from "../../../Interface/Question";
 import {
   CategoryContext,
@@ -10,7 +10,18 @@ import type { Toast } from "primereact/toast";
 
 
 export function useFetchQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      question: "kjhskjaf",
+      answer: 1,
+      choices: ["kjsahf", "kjashf", "kjashf", "kjashf"],
+    },
+    {
+      question: "kjhskjaf 2",
+      answer: 1,
+      choices: ["kjsahf", "kjashf", "kjashf", "kjashf"],
+    }
+  ]);
   const [isFromDB, setIsFromDb] = useState(false);
 
   const { categoriesSelected, setCategoriesSelected } = useContext(
@@ -45,5 +56,14 @@ export function useFetchQuestions() {
     fetching();
   }, []);
 
-  return { questions, isFromDB };
+  const changeChosen = (index: number, chosen: number) => {
+    setQuestions((prev) => {
+      const copy = prev;
+      copy[index] = { ...copy[index], chosen: chosen};
+      console.log(copy);
+      return copy;
+    })
+  }
+
+  return { questions, isFromDB, changeChosen };
 }

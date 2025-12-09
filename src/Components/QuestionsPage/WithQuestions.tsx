@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import ChoiceButton from "./ChoiceButton";
 import { useTimer } from "./hooks/useTimer";
 import {
   ScoreContext,
   type ScoreContextType,
 } from "../../Context/ScoreContext";
-import { checkAnswer } from "../../Utils/checkAnswer";
+import { checkAnswer } from "../../Utils/utils";
 import type { Question } from "../../Interface/Question";
 import { useNavigate } from "react-router";
 import { useStoreQuestions } from "./hooks/useStoreQuestions";
@@ -13,13 +13,14 @@ import { useStoreQuestions } from "./hooks/useStoreQuestions";
 interface Props {
   questions: Question[];
   isFromDB: boolean;
+  changeChosen: (index: number, chosen: number) => void;
 }
 
-function WithQuestions({ questions, isFromDB }: Props) {
+function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
   const navigate = useNavigate();
 
-  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer } =
+  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer, timeRunOut } =
     useTimer(questions.length);
 
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
@@ -29,6 +30,12 @@ function WithQuestions({ questions, isFromDB }: Props) {
   if(!isFromDB) {
     useStoreQuestions(questions);
   }
+
+  useEffect(() => {
+    if (timeRunOut) {
+      navigate("/score", { state: { questions: questions } });
+    }
+  }, [timeRunOut]);
 
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
@@ -68,6 +75,8 @@ function WithQuestions({ questions, isFromDB }: Props) {
         }`}
         disabled={isSubmitBtnDisabled}
         onClick={() => {
+          changeChosen(currentQuestionIndex, selectedAns);
+
           if (
             checkAnswer(selectedAns, questions[currentQuestionIndex].answer)
           ) {
@@ -83,13 +92,14 @@ function WithQuestions({ questions, isFromDB }: Props) {
 
             if (updated >= questions.length) {
               setSelectedAns(-1);
-              navigate("/score");
+              navigate("/score", { state: { questions: questions } });
               return prev;
             }
             setSelectedAns(-1);
             setTimer(30);
             return updated;
           });
+
         }}
       >
         Submit
