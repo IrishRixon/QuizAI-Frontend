@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ToastContext } from "../../Context/Toast";
 import Button from "./Button";
 import { useNavigate } from "react-router";
@@ -7,6 +7,10 @@ import type { Toast } from "primereact/toast";
 function LandingPage() {
   const toast = useContext(ToastContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    sessionStorage.setItem("visitedLanding", "true");
+  }, []);
 
   return (
     <>
