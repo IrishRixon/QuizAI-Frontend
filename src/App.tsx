@@ -14,6 +14,8 @@ import { ToastContext } from "./Context/Toast";
 import { Button } from "primereact/button";
 import ViewAnswers from "./Components/ViewAnswers/ViewAnswers";
 import ProtectedRoute from "./Utils/ProtectedRoute";
+import RoomOptions from "./Components/RoomOptions/RoomOptions";
+import Room from "./Components/Room/Room";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -46,6 +48,7 @@ function App() {
               <BrowserRouter>
                 <div className="h-dvh w-full bg-(--primary-color) relative">
                   <div className="absolute h-screen w-screen bg-[url(/images/robot.png)] bg-repeat-round bg-[length:80px_80px] opacity-30 -z-0"></div>
+                  
                   <Toast ref={toast} position="top-center" />
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
@@ -53,6 +56,8 @@ function App() {
                     <Route path="/questions" element={ <ProtectedRoute><QuestionsPage /></ProtectedRoute>} />
                     <Route path="/score" element={ <ProtectedRoute><Score /></ProtectedRoute>} />
                     <Route path="/viewAnswers" element={ <ProtectedRoute><ViewAnswers /></ProtectedRoute>} />
+                    <Route path="/multiplayer" element={ <RoomOptions /> } />
+                    <Route path="/room" element={ <Room /> } />
                     <Route path="*" element={<h1 className="h-full w-full flex items-center justify-center sm:text-xl md:text-2xl lg:text-4xl">404 Page not found</h1>} />
                   </Routes>
                 </div>

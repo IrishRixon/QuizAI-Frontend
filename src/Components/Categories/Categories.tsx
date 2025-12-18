@@ -7,6 +7,7 @@ import NumberOfQues from "./NumberOfQues";
 import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 import { useNavigate } from "react-router";
 import { Ripple } from "primereact/ripple";
+import BackButton from "../GeneralBtn/BackButton";
 
 const categories = [
   "Food",
@@ -31,23 +32,7 @@ function Categories() {
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       
       <div className="flex justify-between">
-        <button
-          type="button"
-          className="flex active:bg-(--secondary-color) active:text-(--white-text) rounded-sm p-ripple"
-          onClick={() => navigate("/")}
-        >
-          <span
-            className="material-symbols-rounded"
-            style={{
-              fontSize: "40px",
-              color: "var(--text-color)",
-              fontWeight: "400",
-            }}
-          >
-            arrow_back
-          </span>
-          <Ripple />
-        </button>
+        <BackButton onClick={() => { navigate("/") }}/>
 
         <p className="text-end mt-4 text-(--white-text) text-xl">
         selected: {selectedCategoriesLen}/3

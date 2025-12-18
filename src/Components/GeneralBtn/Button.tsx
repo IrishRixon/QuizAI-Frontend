@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { Ripple } from "primereact/ripple";
 
 interface ButtonProps {
@@ -7,7 +6,6 @@ interface ButtonProps {
 }
 
 function Button({txt, handleClicked}: ButtonProps) {
-  let navigate = useNavigate();
 
   return (
     <button

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { ToastContext } from "../../Context/Toast";
-import Button from "./Button";
+import Button from "../GeneralBtn/Button";
 import { useNavigate } from "react-router";
 import type { Toast } from "primereact/toast";
 
