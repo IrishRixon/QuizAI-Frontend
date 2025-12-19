@@ -3,9 +3,14 @@ import BackButton from "../GeneralBtn/BackButton";
 import { Ripple } from "primereact/ripple";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
+import ParticipantCard from "./ParticipantCard";
+import KickButton from "./KickButton";
+import FooterButton from "../GeneralBtn/FooterButton";
+import { useState } from "react";
 
 function Room() {
   const navigate = useNavigate();
+  const [isReady, setIsReady] = useState(false);
 
   return (
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
@@ -26,10 +31,11 @@ function Room() {
           size="small"
           pt={{
             icon: {
-              className:"text-(--text-color) font-bold!",
+              className: "text-(--text-color) font-bold!",
             },
             root: {
-              className:"focus:shadow-none! focus:ring focus:ring-(--secondary-color)!",
+              className:
+                "focus:shadow-none! focus:ring focus:ring-(--secondary-color)!",
             },
           }}
         />
@@ -47,32 +53,83 @@ function Room() {
           pt={{
             root: {
               className:
-                "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none!",
+                "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none!"
             },
           }}
         />
       </section>
 
-      <div className="flex gap-4 items-center mt-4">
-        <Avatar
-          label="P"
-          size="xlarge"
-          shape="circle"
-          image="\images\avatars\Avatar-1.png"
-          pt={{
-            image: {
-              className: "object-cover",
-            },
-          }}
-        />
+      <div className="flex mt-4 items-center justify-between">
+        <div className="flex gap-4 items-center">
+          <Avatar
+            label="P"
+            size="xlarge"
+            shape="circle"
+            image="\images\avatars\Avatar-1.png"
+            pt={{
+              image: {
+                className: "object-scale-down"
+              },
+            }}
+          />
+          <h3 className="text-(--white-text) mt-2">Zack Ford</h3>
+        </div>
 
-        <h3 className="text-(--white-text) mt-2">Zack Ford</h3>
+        { isReady && <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>}
       </div>
 
-      <div className="flex justify-between mt-8">
+      <div className="flex justify-between mt-8 text-xl text-(--white-text)">
         <p>Participants: </p>
         <p>5/10</p>
       </div>
+
+      <article className="mt-2 flex flex-col gap-4 grow overflow-y-auto">
+        <div className="flex justify-between items-center">
+          <ParticipantCard
+            playerName="Jiange He"
+            image="\images\avatars\Avatar-2.png"
+          />
+          <KickButton />
+        </div>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard
+            playerName="White Crane"
+            image="\images\avatars\Avatar-3.png"
+          />
+          <KickButton />
+        </div>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard
+            playerName="Old Jiang"
+            image="\images\avatars\Avatar-4.png"
+          />
+          <KickButton />
+        </div>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard
+            playerName="White Crane"
+            image="\images\avatars\Avatar-3.png"
+          />
+          <KickButton />
+        </div>
+
+      </article>
+
+      <footer>
+        <FooterButton
+          label={isReady ? "Not Ready" : "Ready"}
+          onClick={() => {
+            setIsReady((prev) => {
+              console.log(!prev);
+              return !prev;
+            });
+          }}
+          boolRef={isReady}
+        />
+      </footer>
     </main>
   );
 }
