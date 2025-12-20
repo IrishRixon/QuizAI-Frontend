@@ -10,7 +10,12 @@ import type { Toast } from "primereact/toast";
 
 
 export function useFetchQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([{
+    question: "hfdhak",
+    answer: 0,
+    choices: ["skjfhk", "hjsdf", "jhbs", "ksjd"],
+  }]);
+  
   const [isFromDB, setIsFromDb] = useState(false);
 
   const { categoriesSelected, setCategoriesSelected } = useContext(

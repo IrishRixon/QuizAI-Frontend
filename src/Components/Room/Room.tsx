@@ -3,7 +3,7 @@ import BackButton from "../GeneralBtn/BackButton";
 import { Ripple } from "primereact/ripple";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
-import ParticipantCard from "./ParticipantCard";
+import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import KickButton from "./KickButton";
 import FooterButton from "../GeneralBtn/FooterButton";
 import { useState } from "react";

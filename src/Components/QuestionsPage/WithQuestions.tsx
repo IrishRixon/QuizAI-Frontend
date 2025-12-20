@@ -9,6 +9,8 @@ import { checkAnswer } from "../../Utils/utils";
 import type { Question } from "../../Interface/Question";
 import { useNavigate } from "react-router";
 import { useStoreQuestions } from "./hooks/useStoreQuestions";
+import ParticipantCard from "../ParticipantCard/ParticipantCard";
+import LoadingDots from "../LoadingDots/LoadingDots";
 
 interface Props {
   questions: Question[];
@@ -18,6 +20,7 @@ interface Props {
 
 function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
+  const [isAnswered, setIsAnswered] = useState(true);
   const navigate = useNavigate();
 
   const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer, timeRunOut } =
@@ -38,7 +41,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   }, [timeRunOut]);
 
   return (
-    <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
+    <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px] overflow-y-auto">
       <div className="flex justify-end mb-6">
         <span className="text-(--white-text) text-xl justify-center flex items-center w-[50px] h-[50px] rounded-full bg-(--secondary-color)">
           {timer}
@@ -69,7 +72,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
         </section>
       </section>
 
-      <button
+      {!isAnswered && <button
         className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) ${
           !isSubmitBtnDisabled && "bg-(--accent-color)"
         }`}
@@ -103,7 +106,26 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
         }}
       >
         Submit
-      </button>
+      </button>}
+
+      {isAnswered && <article className="mt-11 flex flex-col gap-4">
+        <p className="text-(--white-text)">Participants: </p>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard image="\images\avatars\Avatar-1.png" playerName="Jiang He" />
+          <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard image="\images\avatars\Avatar-2.png" playerName="Jiang He" />
+          <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <ParticipantCard image="\images\avatars\Avatar-3.png" playerName="Jiang He" />
+          <LoadingDots />
+        </div>
+      </article>}
     </main>
   );
 }
