@@ -119,13 +119,13 @@ function MultiScore() {
         </div>
       </article>
 
-      <footer className="w-full">
+      <footer className="w-full flex flex-col gap-4">
         <FooterButton
           label="Return to room"
           handleClick={() => {}}
           boolRef={false}
         />
-        <ButtonTransparent label="Quit" handleClicked={() => {}} />
+        <ButtonTransparent label="Quit" className="text-md" handleClicked={() => {}} />
       </footer>
     </main>
   );

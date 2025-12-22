@@ -15,7 +15,7 @@ function FooterButton({
 }: Props) {
   return (
     <button
-      className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) p-ripple ${
+      className={`px-8 py-4 w-full mt-4 rounded text-(--white-text) border border-(--accent-color) p-ripple ${
         !boolRef && "bg-(--accent-color)"
       }`}
       onClick={handleClick}
