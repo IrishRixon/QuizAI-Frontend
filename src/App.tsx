@@ -16,6 +16,7 @@ import ViewAnswers from "./Components/ViewAnswers/ViewAnswers";
 import ProtectedRoute from "./Utils/ProtectedRoute";
 import RoomOptions from "./Components/RoomOptions/RoomOptions";
 import Room from "./Components/Room/Room";
+import MultiScore from "./Components/MultiScore/MultiScore";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -58,6 +59,7 @@ function App() {
                     <Route path="/viewAnswers" element={ <ProtectedRoute><ViewAnswers /></ProtectedRoute>} />
                     <Route path="/multiplayer" element={ <RoomOptions /> } />
                     <Route path="/room" element={ <Room /> } />
+                    <Route path="/multiscore" element={ <MultiScore /> } />
                     <Route path="*" element={<h1 className="h-full w-full flex items-center justify-center sm:text-xl md:text-2xl lg:text-4xl">404 Page not found</h1>} />
                   </Routes>
                 </div>

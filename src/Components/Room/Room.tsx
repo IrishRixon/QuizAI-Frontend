@@ -16,7 +16,7 @@ function Room() {
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       <header>
         <BackButton
-          onClick={() => {
+          handleClick={() => {
             navigate("/multiplayer");
           }}
         />
@@ -53,7 +53,7 @@ function Room() {
           pt={{
             root: {
               className:
-                "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none!"
+                "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none!",
             },
           }}
         />
@@ -68,14 +68,16 @@ function Room() {
             image="\images\avatars\Avatar-1.png"
             pt={{
               image: {
-                className: "object-scale-down"
+                className: "object-scale-down",
               },
             }}
           />
           <h3 className="text-(--white-text) mt-2">Zack Ford</h3>
         </div>
 
-        { isReady && <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>}
+        {isReady && (
+          <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
+        )}
       </div>
 
       <div className="flex justify-between mt-8 text-xl text-(--white-text)">
@@ -115,13 +117,12 @@ function Room() {
           />
           <KickButton />
         </div>
-
       </article>
 
-      <footer>
+      <footer className="w-full">
         <FooterButton
           label={isReady ? "Not Ready" : "Ready"}
-          onClick={() => {
+          handleClick={() => {
             setIsReady((prev) => {
               console.log(!prev);
               return !prev;

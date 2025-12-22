@@ -30,15 +30,17 @@ function Categories() {
 
   return (
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
-      
       <div className="flex justify-between">
-        <BackButton onClick={() => { navigate("/") }}/>
+        <BackButton
+          handleClick={() => {
+            navigate("/");
+          }}
+        />
 
         <p className="text-end mt-4 text-(--white-text) text-xl">
-        selected: {selectedCategoriesLen}/3
+          selected: {selectedCategoriesLen}/3
         </p>
       </div>
-
 
       <div className="flex grow mt-8 flex-col overflow-y-auto sm:pb-10">
         <div className="flex flex-wrap justify-between content-start gap-y-4 sm:gap-x-4">
