@@ -57,9 +57,9 @@ function App() {
                     <Route path="/questions" element={ <ProtectedRoute><QuestionsPage /></ProtectedRoute>} />
                     <Route path="/score" element={ <ProtectedRoute><Score /></ProtectedRoute>} />
                     <Route path="/viewAnswers" element={ <ProtectedRoute><ViewAnswers /></ProtectedRoute>} />
-                    <Route path="/multiplayer" element={ <RoomOptions /> } />
-                    <Route path="/room" element={ <Room /> } />
-                    <Route path="/multiscore" element={ <MultiScore /> } />
+                    <Route path="/multiplayer" element={ <ProtectedRoute><RoomOptions /></ProtectedRoute> } />
+                    <Route path="/multiplayer/room" element={ <ProtectedRoute><Room /></ProtectedRoute> } />
+                    <Route path="/multiplayer/multiscore" element={ <ProtectedRoute><MultiScore /></ProtectedRoute> } />
                     <Route path="*" element={<h1 className="h-full w-full flex items-center justify-center sm:text-xl md:text-2xl lg:text-4xl">404 Page not found</h1>} />
                   </Routes>
                 </div>

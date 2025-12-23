@@ -6,11 +6,16 @@ import { Avatar } from "primereact/avatar";
 import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import KickButton from "./KickButton";
 import FooterButton from "../GeneralBtn/FooterButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { socket } from "../../socket";
 
 function Room() {
   const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    socket.connect();
+  }, []);
 
   return (
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
