@@ -21,9 +21,6 @@ function Score() {
   const playAgain = () => {
     navigate("/categories");
     setScore(0);
-    setCategoriesSelected((prev) => {
-      return { ...prev, selectedCategories: [] };
-    });
   };
 
   useEffect(() => {

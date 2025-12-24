@@ -38,14 +38,7 @@ function LandingPage() {
           ></ButtonTransparent>
           <ButtonTransparent
             label="MultiPlayer"
-            handleClicked={() => {
-              toast?.current?.show({
-                severity: "info",
-                summary: "In development",
-                detail: "Multiplayer is in the process of development",
-                life: 5000,
-              });
-            }}
+            handleClicked={() => {navigate('multiplayer')}}
           ></ButtonTransparent>
         </div>
       </div>
@@ -54,3 +47,12 @@ function LandingPage() {
 }
 
 export default LandingPage;
+
+// {
+//   toast?.current?.show({
+//     severity: "info",
+//     summary: "In development",
+//     detail: "Multiplayer is in the process of development",
+//     life: 5000,
+//   });
+// }

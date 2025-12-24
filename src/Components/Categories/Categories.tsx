@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import Card from "./Card";
 import Difficulty from "./Difficulty";
@@ -8,6 +8,7 @@ import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 import { useNavigate } from "react-router";
 import { Ripple } from "primereact/ripple";
 import BackButton from "../GeneralBtn/BackButton";
+import FooterButton from "../GeneralBtn/FooterButton";
 
 const categories = [
   "Food",
@@ -22,23 +23,33 @@ const categories = [
 ];
 
 function Categories() {
-  const { categoriesSelected } = useContext(CategoryContext) as StateCat;
+  const { categoriesSelected, setCategoriesSelected } = useContext(
+    CategoryContext
+  ) as StateCat;
   const { isCategoryLessThanMax, selectedCategoriesLen, toggleCategory } =
     useCategorySelection(3);
   let navigate = useNavigate();
+
   const isStartBtnDisabled = categoriesSelected.selectedCategories.length == 0;
+  const isCreateRoom = window.location.pathname === '/multiplayer/categories';
+
+  useEffect(() => {
+    setCategoriesSelected((prev) => {
+      return { ...prev, selectedCategories: [] };
+    });
+  }, []);
 
   return (
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       <div className="flex justify-between">
         <BackButton
           handleClick={() => {
-            navigate("/");
+            isCreateRoom ? navigate("/multiplayer") : navigate('/');
           }}
         />
 
         <p className="text-end mt-4 text-(--white-text) text-xl">
-          selected: {selectedCategoriesLen}/3
+          selected: {categoriesSelected.selectedCategories.length}/3
         </p>
       </div>
 
@@ -67,16 +78,14 @@ function Categories() {
         </div>
       </div>
 
-      <button
-        className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) p-ripple ${
-          !isStartBtnDisabled && "bg-(--accent-color)"
-        }`}
-        onClick={() => navigate("/questions")}
-        disabled={isStartBtnDisabled}
-      >
-        Start
-        <Ripple />
-      </button>
+      <footer>
+        <FooterButton
+          boolRef={isStartBtnDisabled}
+          handleClick={() => isCreateRoom ? navigate("/multiplayer/room") : navigate("/questions")}
+          label={ isCreateRoom ? "Create Room" : "Start"}
+          isDisabled={isStartBtnDisabled}
+        />
+      </footer>
     </main>
   );
 }

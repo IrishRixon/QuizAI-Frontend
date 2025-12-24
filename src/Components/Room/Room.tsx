@@ -6,27 +6,31 @@ import { Avatar } from "primereact/avatar";
 import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import KickButton from "./KickButton";
 import FooterButton from "../GeneralBtn/FooterButton";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { socket } from "../../socket";
 import LoadingPage from "../LoadingPage/LoadingPage";
+import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
+import CategoriesDialog from "./CategoriesDialog";
 
 function Room() {
+  const { categoriesSelected } = useContext(CategoryContext) as StateCat;
   const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
   const [roomID, setRoomID] = useState("");
+  const [dialogVisibility, setDialogVisibility] = useState(false);
 
   useEffect(() => {
-    socket.connect();
-    socket.emit("create-room", (response: { status: string }) => {
-      if (!response) {
-        throw new Error("error");
-      } else {
-        socket.on("generated-roomID", (response) => {
-          setRoomID(response.roomID);
-          console.log(response);
-        });
-      }
-    });
+    if (!roomID.length) {
+      socket.connect();
+      socket.emit(
+        "create-room",
+        (response: { status: string; roomID: string }) => {
+          if (response.status === "ok") {
+            setRoomID(response.roomID);
+          }
+        }
+      );
+    }
   }, []);
 
   if (!roomID.length) {
@@ -62,17 +66,20 @@ function Room() {
         </section>
 
         <section className="flex border rounded border-(--secondary-color) mt-4">
-          <h2 className="text-sm grow p-1 flex items-center gap-2">
+          <h2 className="text-sm grow p-1 flex items-center gap-2 max-w-[221px]">
             <span className="text-[#9BA9C0]">Categories: </span>
             <span className="text-[#646D7A]">
               {" "}
-              Anime, Food, Music, Easy, 10
+              {`${categoriesSelected.selectedCategories}, ${categoriesSelected.difficulty}, ${categoriesSelected.numberOfQuestions}`}
             </span>
           </h2>
 
           <Button
             label="Change"
             size="small"
+            onClick={() => {
+              setDialogVisibility(true);
+            }}
             pt={{
               root: {
                 className:
@@ -109,37 +116,13 @@ function Room() {
         </div>
 
         <article className="mt-2 flex flex-col gap-4 grow overflow-y-auto">
-          <div className="flex justify-between items-center">
+          {/* <div className="flex justify-between items-center">
             <ParticipantCard
               playerName="Jiange He"
               image="\images\avatars\Avatar-2.png"
             />
             <KickButton />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              playerName="White Crane"
-              image="\images\avatars\Avatar-3.png"
-            />
-            <KickButton />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              playerName="Old Jiang"
-              image="\images\avatars\Avatar-4.png"
-            />
-            <KickButton />
-          </div>
-
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              playerName="White Crane"
-              image="\images\avatars\Avatar-3.png"
-            />
-            <KickButton />
-          </div>
+          </div> */}
         </article>
 
         <footer className="w-full">
@@ -154,6 +137,13 @@ function Room() {
             boolRef={isReady}
           />
         </footer>
+
+        <CategoriesDialog
+          visible={dialogVisibility}
+          setVisible={(visible: boolean) => {
+            setDialogVisibility(visible);
+          }}
+        />
       </main>
     );
   }

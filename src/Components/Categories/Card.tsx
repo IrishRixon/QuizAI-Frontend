@@ -1,5 +1,6 @@
 import { Ripple } from "primereact/ripple";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 
 interface CardProps {
   image: string;
@@ -10,15 +11,19 @@ interface CardProps {
 }
 
 function Card(props: CardProps) {
+  const { categoriesSelected, setCategoriesSelected } = useContext(
+    CategoryContext
+  ) as StateCat;
   let [active, setActive] = useState(false);
+  const alreadySelected = categoriesSelected.selectedCategories.includes(props.label);
 
   return (
     <button
       className={`p-ripple w-[100px] h-[85px] border border-(--secondary-color) rounded p-2 flex flex-col gap-4 items-center ${
-        active && "bg-(--secondary-color)"
+        alreadySelected && "bg-(--secondary-color)"
       }`}
       onClick={() => {
-        active ? setActive(false) : setActive(props.canActive);
+        alreadySelected ? setActive(false) : setActive(props.canActive);
         props.emitValue(props.label);
       }}
     >
