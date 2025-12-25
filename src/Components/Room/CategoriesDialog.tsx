@@ -5,6 +5,8 @@ import Categories from "../Categories/Categories";
 import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 import { useCategorySelection } from "../Categories/hooks/useCategorySelection";
 import Card from "../Categories/Card";
+import Difficulty from "../Categories/Difficulty";
+import NumberOfQues from "../Categories/NumberOfQues";
 
 interface Props {
   visible: boolean;
@@ -42,11 +44,11 @@ function CategoriesDialog({ visible, setVisible }: Props) {
         }}
       >
         <main className="font-[Bree-serif]">
-          <p className="text-end mt-4 text-(--white-text) text-md">
+          <p className="text-end mb-4 text-(--white-text) text-md">
             selected: {categoriesSelected.selectedCategories.length}/3
           </p>
 
-          <div className="flex flex-wrap justify-between content-start gap-y-4 sm:gap-x-4">
+          <div className="flex flex-wrap content-start md:gap-x-4 justify-center gap-4">
             {categories.map((item, index) => {
               return (
                 <Card
@@ -59,6 +61,14 @@ function CategoriesDialog({ visible, setVisible }: Props) {
                 ></Card>
               );
             })}
+          </div>
+
+          <div>
+            <Difficulty></Difficulty>
+          </div>
+
+          <div>
+            <NumberOfQues></NumberOfQues>
           </div>
         </main>
       </Dialog>

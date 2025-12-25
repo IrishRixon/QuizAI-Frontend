@@ -25,7 +25,7 @@ function RoomOptions() {
           ></ButtonTransparent>
           <ButtonTransparent
             label={"Join Room"}
-            handleClicked={() => {}}
+            handleClicked={() => {navigate("/multiplayer/joinroom")}}
           ></ButtonTransparent>
         </article>
       </main>

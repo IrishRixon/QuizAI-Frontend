@@ -17,6 +17,7 @@ import ProtectedRoute from "./Utils/ProtectedRoute";
 import RoomOptions from "./Components/RoomOptions/RoomOptions";
 import Room from "./Components/Room/Room";
 import MultiScore from "./Components/MultiScore/MultiScore";
+import JoinRoom from "./Components/JoinRoom/JoinRoom";
 
 interface CategoriesSelected {
   selectedCategories: string[];
@@ -58,6 +59,7 @@ function App() {
                     <Route path="/score" element={ <ProtectedRoute><Score /></ProtectedRoute>} />
                     <Route path="/viewAnswers" element={ <ProtectedRoute><ViewAnswers /></ProtectedRoute>} />
                     <Route path="/multiplayer" element={ <ProtectedRoute><RoomOptions /></ProtectedRoute> } />
+                    <Route path="/multiplayer/joinroom" element={ <ProtectedRoute><JoinRoom /></ProtectedRoute> } />
                     <Route path="/multiplayer/categories" element={ <ProtectedRoute><Categories /></ProtectedRoute>} />
                     <Route path="/multiplayer/room" element={ <ProtectedRoute><Room /></ProtectedRoute> } />
                     <Route path="/multiplayer/multiscore" element={ <ProtectedRoute><MultiScore /></ProtectedRoute> } />

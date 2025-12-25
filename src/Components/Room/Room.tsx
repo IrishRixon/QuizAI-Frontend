@@ -65,10 +65,10 @@ function Room() {
           />
         </section>
 
-        <section className="flex border rounded border-(--secondary-color) mt-4">
-          <h2 className="text-sm grow p-1 flex items-center gap-2 max-w-[221px]">
+        <section className="flex border rounded border-(--secondary-color) mt-4 w-full">
+          <h2 className="text-sm p-1 grow flex items-center gap-2">
             <span className="text-[#9BA9C0]">Categories: </span>
-            <span className="text-[#646D7A]">
+            <span className="text-[#646D7A] grow">
               {" "}
               {`${categoriesSelected.selectedCategories}, ${categoriesSelected.difficulty}, ${categoriesSelected.numberOfQuestions}`}
             </span>
@@ -83,7 +83,7 @@ function Room() {
             pt={{
               root: {
                 className:
-                  "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none!",
+                  "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none! min-w-[89px]"
               },
             }}
           />
@@ -98,7 +98,7 @@ function Room() {
               image="\images\avatars\Avatar-1.png"
               pt={{
                 image: {
-                  className: "object-scale-down",
+                  className: "object-scale-down"
                 },
               }}
             />
@@ -112,7 +112,7 @@ function Room() {
 
         <div className="flex justify-between mt-8 text-xl text-(--white-text)">
           <p>Participants: </p>
-          <p>5/10</p>
+          <p>0/10</p>
         </div>
 
         <article className="mt-2 flex flex-col gap-4 grow overflow-y-auto">
