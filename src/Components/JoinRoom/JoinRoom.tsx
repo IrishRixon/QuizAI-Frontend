@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import BackButton from "../GeneralBtn/BackButton";
 import { useNavigate } from "react-router";
 import { Button } from "primereact/button";
@@ -8,9 +8,19 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import FooterButton from "../GeneralBtn/FooterButton";
+import { InputNumber } from "primereact/inputnumber";
+import { classNames } from "primereact/utils";
+import { socket } from "../../socket";
+import { ToastContext } from "../../Context/Toast";
 
 function JoinRoom() {
+    const toast = useContext(ToastContext);
+
     const navigate = useNavigate();
+    const [name, setName] = useState("Newbie");
+    const [roomID, setRoomID] = useState<number>();
+    const isInvalid = !roomID || name.length === 0;
+
     return (
         <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
             <div className="flex justify-between">
@@ -63,11 +73,14 @@ function JoinRoom() {
                             <InputIcon className="pi pi-pencil"> </InputIcon>
                             <InputText
                                 type="text"
-                                placeholder="Normal"
+                                placeholder="Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                onBlur={(e) => {if(e.target.value === "") setName("Newbie")}}
                                 pt={{
                                     root: {
                                         className:
-                                            "bg-transparent! border-t-0! border-l-0! border-r-0! border-b-2! rounded-none! focus:shadow-none! w-full!",
+                                            "bg-transparent! border-t-0! border-l-0! border-r-0! border-b-2! rounded-none! focus:shadow-none! w-full! font-[Bree-serif]! text-xl!"
                                     },
                                 }}
                             />
@@ -76,18 +89,47 @@ function JoinRoom() {
                 </section>
 
                 <section className="w-full">
-                    <InputText
-                        type="text"
+                    <InputNumber
                         placeholder="Enter Room ID"
+                        useGrouping={false}
+                        value={roomID}
+                        onChange={(e) => {setRoomID(Number(e.value))}}
                         pt={{
                             root: {
-                                className:
-                                    "bg-transparent! focus:shadow-none! w-full!",
+                                className: "w-full!"
                             },
+                            input: {
+                                root: {
+                                    className: "bg-transparent! focus:shadow-none!"
+                                }
+                            } 
+                            
                         }}
                     />
 
-                    <FooterButton label="Join Room" handleClick={() => {}} boolRef={false}/>
+                    <FooterButton label="Join Room" handleClick={() => { 
+                        const roomIDstr = String(roomID);
+
+                        socket.connect();
+                        socket.emit("join-room", { roomIDstr }, (res: { message: string, ok: boolean, error?: { summary: string, detail: string}}) => {
+                            if (!res.ok) {
+                              toast?.current?.show({
+                                severity: "error",
+                                summary: res.error!.summary,
+                                detail: res.error!.detail,
+                                life: 5000
+                              });
+                            } else {
+                              toast?.current?.show({
+                                severity: "success",
+                                summary: res.message,
+                                life: 5000
+                              });
+                            }
+                          });
+                          
+
+                        }} boolRef={isInvalid} isDisabled={isInvalid}/>
                 </section>
             </article>
         </main>

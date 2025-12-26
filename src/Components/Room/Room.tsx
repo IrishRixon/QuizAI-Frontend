@@ -6,7 +6,7 @@ import { Avatar } from "primereact/avatar";
 import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import KickButton from "./KickButton";
 import FooterButton from "../GeneralBtn/FooterButton";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { socket } from "../../socket";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
@@ -19,7 +19,12 @@ function Room() {
   const [roomID, setRoomID] = useState("");
   const [dialogVisibility, setDialogVisibility] = useState(false);
 
+  const effectRef = useRef(false);
+
   useEffect(() => {
+    if(effectRef.current) return;
+    effectRef.current = true;
+    
     if (!roomID.length) {
       socket.connect();
       socket.emit(
@@ -30,6 +35,10 @@ function Room() {
           }
         }
       );
+
+      socket.on('someone-joined', (data) => {
+        console.log(data);
+      })
     }
   }, []);
 

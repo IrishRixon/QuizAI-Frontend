@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import type { Toast } from "primereact/toast";
 
 function LandingPage() {
-  const toast = useContext(ToastContext);
+  // const toast = useContext(ToastContext);
   const navigate = useNavigate();
 
   useEffect(() => {
