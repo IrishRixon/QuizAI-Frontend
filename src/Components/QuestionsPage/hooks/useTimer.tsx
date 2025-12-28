@@ -13,7 +13,6 @@ export function useTimer(numberOfQues: number) {
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;
-    console.log("ran effect");
 
     setInterval(() => {
       setTimer((prev) => {

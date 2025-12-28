@@ -12,14 +12,29 @@ import { InputNumber } from "primereact/inputnumber";
 import { classNames } from "primereact/utils";
 import { socket } from "../../socket";
 import { ToastContext } from "../../Context/Toast";
+import type { PlayerData } from "../../Interface/PlayerData";
+import AvatarDialog from "./AvatarDialog";
+import type { RoomState } from "../../Interface/RoomState";
 
 function JoinRoom() {
     const toast = useContext(ToastContext);
 
+    const playerName = localStorage.getItem('playerName') ?? "Newbie";
+    const playerAvatar = localStorage.getItem('playerAvatar') ?? "/images/avatars/Avatar-1.png";
+
     const navigate = useNavigate();
-    const [name, setName] = useState("Newbie");
+    const [name, setName] = useState(playerName);
+    const [avatar, setAvatar] = useState(playerAvatar);
     const [roomID, setRoomID] = useState<number>();
+    const [visible, setVisible] = useState(false);
+    const [roomState, setRoomState] = useState<RoomState>();
+
     const isInvalid = !roomID || name.length === 0;
+
+
+    const playerData: PlayerData = { playerName: name, playerAvatar: avatar };
+
+    
 
     return (
         <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
@@ -50,7 +65,7 @@ function JoinRoom() {
                             label="P"
                             size="xlarge"
                             shape="circle"
-                            image="/images/avatars/Avatar-1.png"
+                            image={avatar}
                             pt={{
                                 image: {
                                     className: "object-scale-down"
@@ -62,7 +77,7 @@ function JoinRoom() {
                         <button
                             className="w-[64px] absolute inset-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                             aria-label="Change avatar"
-                            onClick={() => console.log("Change avatar")}
+                            onClick={() => setVisible(true)}
                         >
                             <span className="pi pi-pencil text-white text-xl" />
                             <Ripple />
@@ -76,7 +91,10 @@ function JoinRoom() {
                                 placeholder="Name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                onBlur={(e) => {if(e.target.value === "") setName("Newbie")}}
+                                onBlur={(e) => {
+                                    if (e.target.value === "") setName("Newbie");
+                                    localStorage.setItem('playerName', name);
+                                }}
                                 pt={{
                                     root: {
                                         className:
@@ -93,7 +111,7 @@ function JoinRoom() {
                         placeholder="Enter Room ID"
                         useGrouping={false}
                         value={roomID}
-                        onChange={(e) => {setRoomID(Number(e.value))}}
+                        onChange={(e) => { setRoomID(Number(e.value)) }}
                         pt={{
                             root: {
                                 className: "w-full!"
@@ -102,37 +120,47 @@ function JoinRoom() {
                                 root: {
                                     className: "bg-transparent! focus:shadow-none!"
                                 }
-                            } 
-                            
+                            }
+
                         }}
                     />
 
-                    <FooterButton label="Join Room" handleClick={() => { 
+                    <FooterButton label="Join Room" handleClick={() => {
                         const roomIDstr = String(roomID);
 
                         socket.connect();
-                        socket.emit("join-room", { roomIDstr }, (res: { message: string, ok: boolean, error?: { summary: string, detail: string}}) => {
-                            if (!res.ok) {
-                              toast?.current?.show({
-                                severity: "error",
-                                summary: res.error!.summary,
-                                detail: res.error!.detail,
-                                life: 5000
-                              });
-                            } else {
-                              toast?.current?.show({
-                                severity: "success",
-                                summary: res.message,
-                                life: 5000
-                              });
-                            }
-                          });
                           
+                        socket.emit("join-room", { roomIDstr }, playerData, (res: {ok: boolean, roomState: RoomState}) => {
+                            if (!res.ok) {
+                                toast?.current?.show({
+                                    severity: "error",
+                                    summary: "Not Found",
+                                    detail: "Room not found please check the Room ID",
+                                    life: 5000
+                                });
+                            } else {
+                                const roomState = res.roomState;
+                                console.log(roomState, "Join room");
+                                
+                                navigate("/multiplayer/room", { state: {roomState: roomState} });
+                                toast?.current?.show({
+                                    severity: "success",
+                                    summary: "Joined Room",
+                                    detail: "Successfully Joined",
+                                    life: 5000
+                                });
+                            }
+                        });
 
-                        }} boolRef={isInvalid} isDisabled={isInvalid}/>
+
+                    }} boolRef={isInvalid} isDisabled={isInvalid} />
                 </section>
             </article>
+
+
+            <AvatarDialog visible={visible} setVisible={(visible) => { setVisible(visible) }} setAvatar={(img) => { setAvatar(img) }} />
         </main>
+
     );
 }
 
