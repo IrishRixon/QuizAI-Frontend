@@ -130,12 +130,12 @@ function JoinRoom() {
 
                         socket.connect();
                           
-                        socket.emit("join-room", { roomIDstr }, playerData, (res: {ok: boolean, roomState: RoomState}) => {
+                        socket.emit("join-room", { roomIDstr }, playerData, (res: {ok: boolean, detail: string, summary: string, roomState: RoomState}) => {
                             if (!res.ok) {
                                 toast?.current?.show({
                                     severity: "error",
-                                    summary: "Not Found",
-                                    detail: "Room not found please check the Room ID",
+                                    summary: res.summary,
+                                    detail: res.detail,
                                     life: 5000
                                 });
                             } else {

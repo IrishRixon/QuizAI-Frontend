@@ -13,6 +13,7 @@ import { CategoryContext, type StateCat } from "../../Context/CategoryContext";
 import CategoriesDialog from "./CategoriesDialog";
 import type { PlayerData } from "../../Interface/PlayerData";
 import type { PlayerInRoom, RoomState } from "../../Interface/RoomState";
+import { ToastContext } from "../../Context/Toast";
 
 function Room() {
   const playerName = localStorage.getItem("playerName") ?? "Newbie";
@@ -20,17 +21,17 @@ function Room() {
     localStorage.getItem("playerAvatar") ?? "/images/avatars/Avatar-1.png";
   const location = useLocation();
 
-  const { categoriesSelected } = useContext(CategoryContext) as StateCat;
+  const { categoriesSelected, setCategoriesSelected } = useContext(CategoryContext) as StateCat;
+  const toast = useContext(ToastContext);
   const navigate = useNavigate();
-  const [isReady, setIsReady] = useState(false);
-  const [roomID, setRoomID] = useState("");
-  const [dialogVisibility, setDialogVisibility] = useState(false);
-  const [hostID, setHostID] = useState("");
 
-  const playerData: PlayerData = { playerName, playerAvatar, isReady };
+  const [isReady, setIsReady] = useState(false);
+  const [dialogVisibility, setDialogVisibility] = useState(false);
   const [roomState, setRoomState] = useState<RoomState>(
     location.state?.roomState
   );
+  const [isHost, setIsHost] = useState(roomState?.host.socketID === socket.id);
+  const playerData: PlayerData = { playerName, playerAvatar, isReady };
 
   const effectRef = useRef(false);
 
@@ -40,25 +41,39 @@ function Room() {
     effectRef.current = true;
 
     socket.connect();
-    socket.on("room-update", (room: RoomState) => {
-      setRoomState(room);
-    });
 
     console.log(roomState, "roomState");
     if (!roomState) {
       socket.emit(
         "create-room",
         playerData,
-        (response: { ok: boolean, roomState: RoomState }) => {
-          if (response.ok) {
-            setRoomState(response.roomState);
-            setHostID(socket.id!);
-          }
-        }
+        categoriesSelected,
       );
     }
 
+    socket.on("room-update", (room: RoomState) => {
+      console.log(room, "room-update");
+      
+      setRoomState(room);
+      setCategoriesSelected((prev) => {
+        return JSON.stringify(prev) === JSON.stringify(room.categoriesSelected) ? prev : room.categoriesSelected;
+      });
+
+      if(room.host.socketID === socket.id) {
+        setIsHost(true);
+      }
+    });
+
   }, []);
+
+  useEffect(() => {
+
+    console.log(roomState, "roomState effect2");
+    if(!roomState) return;
+    if (socket.id !== roomState.host.socketID) return;
+
+    socket.emit('categoriesSelected-changed', roomState.roomID, categoriesSelected);
+  }, [categoriesSelected]);
 
   if (!roomState) {
     return <LoadingPage text="Loading ..." />;
@@ -80,6 +95,10 @@ function Room() {
             rounded
             text
             size="small"
+            onClick={() => {
+              navigator.clipboard.writeText(roomState.roomID);
+              toast?.current?.show({ severity: 'success', summary: 'Copied', detail: "Copied to Clipboard", life: 3000 });
+            }}
             pt={{
               icon: {
                 className: "text-(--text-color) font-bold!",
@@ -101,7 +120,7 @@ function Room() {
             </span>
           </h2>
 
-          <Button
+          {isHost && <Button
             label="Change"
             size="small"
             onClick={() => {
@@ -113,7 +132,7 @@ function Room() {
                   "focus:shadow-none! bg-(--text-color)! text-(--white-text)! border-none! min-w-[89px]"
               },
             }}
-          />
+          />}
         </section>
 
         <div className="flex mt-4 items-center justify-between">
@@ -134,7 +153,7 @@ function Room() {
             </h3>
           </div>
 
-          {isReady && (
+          {roomState.host.isReady && (
             <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
           )}
         </div>
@@ -153,21 +172,22 @@ function Room() {
                 playerName={ele.playerName}
                 image={ele.playerAvatar}
               />
-              <KickButton isReady={ele.isReady} isHost={socket.id === roomState.host.socketID}/>
+              <KickButton isReady={ele.isReady} isHost={isHost} socketID={ele.socketID} roomID={roomState.roomID}/>
             </div>)
           })}
         </article>
 
         <footer className="w-full">
           <FooterButton
-            label={isReady ? "Not Ready" : "Ready"}
+            label={roomState.players.find((ele) => {
+              if(ele.socketID === socket.id) return ele.isReady;
+            }) ? "Not Ready" : "Ready"}
             handleClick={() => {
-              setIsReady((prev) => {
-                console.log(!prev);
-                return !prev;
-              });
+              socket.emit("toggle-ready", roomState.roomID, socket.id);
             }}
-            boolRef={isReady}
+            boolRef={roomState.players.find((ele) => {
+              if(ele.socketID === socket.id) return ele.isReady;
+            }) ? true : false}
           />
         </footer>
 

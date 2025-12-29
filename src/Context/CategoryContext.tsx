@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-interface CategoriesSelected {
+export interface CategoriesSelected {
     selectedCategories: string[];
     difficulty: string;
     numberOfQuestions: number;

@@ -1,5 +1,8 @@
+import type { CategoriesSelected } from "../Context/CategoryContext";
+
 export interface RoomState {
-    roomID?: string;
+    categoriesSelected: CategoriesSelected;
+    roomID: string;
     host: PlayerInRoom;
     players: PlayerInRoom[];
     
