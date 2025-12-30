@@ -1,4 +1,10 @@
-import { useContext, useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import ChoiceButton from "./ChoiceButton";
 import { useTimer } from "./hooks/useTimer";
 import {
@@ -11,6 +17,7 @@ import { useNavigate } from "react-router";
 import { useStoreQuestions } from "./hooks/useStoreQuestions";
 import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import LoadingDots from "../LoadingDots/LoadingDots";
+import FooterButton from "../GeneralBtn/FooterButton";
 
 interface Props {
   questions: Question[];
@@ -23,14 +30,19 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [isAnswered, setIsAnswered] = useState(true);
   const navigate = useNavigate();
 
-  const { currentQuestionIndex, timer, setCurrentQuestionIndex, setTimer, timeRunOut } =
-    useTimer(questions.length);
+  const {
+    currentQuestionIndex,
+    timer,
+    setCurrentQuestionIndex,
+    setTimer,
+    timeRunOut,
+  } = useTimer(questions.length);
 
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
 
   const isSubmitBtnDisabled = selectedAns == -1;
 
-  if(!isFromDB) {
+  if (!isFromDB) {
     useStoreQuestions(questions);
   }
 
@@ -41,15 +53,15 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   }, [timeRunOut]);
 
   return (
-    <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px] overflow-y-auto">
+    <main className="w-full h-full relative flex flex-col">
       <div className="flex justify-end mb-6">
         <span className="text-(--white-text) text-xl justify-center flex items-center w-[50px] h-[50px] rounded-full bg-(--secondary-color)">
           {timer}
         </span>
       </div>
 
-      <section className="grow">
-        <div className="h-[273px] w-full rounded shadow-md bg-(--secondary-color) p-2.5 flex items-center justify-center mb-9">
+      <section className="grow min-h-[550px]">
+        <div className="min-h-2/5 w-full rounded shadow-md bg-(--secondary-color) p-2.5 flex items-center justify-center">
           <p className="text-(--white-text) text-xl text-center">
             {questions.length > currentQuestionIndex
               ? questions[currentQuestionIndex].question
@@ -57,7 +69,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
           </p>
         </div>
 
-        <section className="flex flex-col gap-2 overflow-y-auto pb-4">
+        <section className="flex flex-col gap-2 overflow-y-auto pb-4 max-h-3/5 pt-8">
           {questions[currentQuestionIndex].choices.map((item, i) => {
             return (
               <ChoiceButton
@@ -72,60 +84,69 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
         </section>
       </section>
 
-      {!isAnswered && <button
-        className={`h-[53px] w-full mt-4 rounded text-(--white-text) border border-(--accent-color) ${
-          !isSubmitBtnDisabled && "bg-(--accent-color)"
-        }`}
-        disabled={isSubmitBtnDisabled}
-        onClick={() => {
-          changeChosen(currentQuestionIndex, selectedAns);
+      {!isAnswered && (
+        <FooterButton
+          boolRef={isSubmitBtnDisabled}
+          isDisabled={isSubmitBtnDisabled}
+          label="Submit"
+          handleClick={() => {
+            changeChosen(currentQuestionIndex, selectedAns);
 
-          if (
-            checkAnswer(selectedAns, questions[currentQuestionIndex].answer)
-          ) {
-            setScore((prev) => {
+            if (
+              checkAnswer(selectedAns, questions[currentQuestionIndex].answer)
+            ) {
+              setScore((prev) => {
+                const updated = prev + 1;
+                console.log(updated);
+                return updated;
+              });
+            }
+
+            setCurrentQuestionIndex((prev) => {
               const updated = prev + 1;
-              console.log(updated);
+
+              if (updated >= questions.length) {
+                setSelectedAns(-1);
+                navigate("/score", { state: { questions: questions } });
+                return prev;
+              }
+              setSelectedAns(-1);
+              setTimer(30);
               return updated;
             });
-          }
+          }}
+        />
+      )}
 
-          setCurrentQuestionIndex((prev) => {
-            const updated = prev + 1;
+      {isAnswered && (
+        <article className="mt-11 flex flex-col gap-4">
+          <p className="text-(--white-text)">Participants: </p>
 
-            if (updated >= questions.length) {
-              setSelectedAns(-1);
-              navigate("/score", { state: { questions: questions } });
-              return prev;
-            }
-            setSelectedAns(-1);
-            setTimer(30);
-            return updated;
-          });
+          <div className="flex justify-between items-center">
+            <ParticipantCard
+              image="\images\avatars\Avatar-1.png"
+              playerName="Jiang He"
+            />
+            <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
+          </div>
 
-        }}
-      >
-        Submit
-      </button>}
+          <div className="flex justify-between items-center">
+            <ParticipantCard
+              image="\images\avatars\Avatar-2.png"
+              playerName="Jiang He"
+            />
+            <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
+          </div>
 
-      {isAnswered && <article className="mt-11 flex flex-col gap-4">
-        <p className="text-(--white-text)">Participants: </p>
-
-        <div className="flex justify-between items-center">
-          <ParticipantCard image="\images\avatars\Avatar-1.png" playerName="Jiang He" />
-          <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <ParticipantCard image="\images\avatars\Avatar-2.png" playerName="Jiang He" />
-          <div className='bg-green-600 h-[10px] w-[10px] rounded-full'></div>
-        </div>
-
-        <div className="flex justify-between items-center">
-          <ParticipantCard image="\images\avatars\Avatar-3.png" playerName="Jiang He" />
-          <LoadingDots />
-        </div>
-      </article>}
+          <div className="flex justify-between items-center">
+            <ParticipantCard
+              image="\images\avatars\Avatar-3.png"
+              playerName="Jiang He"
+            />
+            <LoadingDots />
+          </div>
+        </article>
+      )}
     </main>
   );
 }

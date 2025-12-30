@@ -10,7 +10,7 @@ interface Props {
 function ChoiceButton({ index, label, handleClick, selectedAns }: Props) {
   return (
     <button
-      className={`p-ripple w-full border border-(--secondary-color) p-4 rounded ${
+      className={`min-h-13 p-ripple w-full box-border! border border-(--secondary-color) rounded ${
         selectedAns === index && "bg-(--secondary-color)"
       }`}
       onClick={() => handleClick(index)}

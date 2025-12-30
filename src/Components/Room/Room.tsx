@@ -30,6 +30,7 @@ function Room() {
   const [roomState, setRoomState] = useState<RoomState>(
     location.state?.roomState
   );
+  const [timer, setTimer] = useState(3);
   const [isHost, setIsHost] = useState(roomState?.host.socketID === socket.id);
   const playerData: PlayerData = { playerName, playerAvatar, isReady };
 
@@ -64,6 +65,32 @@ function Room() {
       }
     });
 
+    socket.on("game-start", () => {
+      setTimer(3);
+      console.log("hello");
+      
+      toast?.current?.show({closable: false, summary: `Game Starts in: ${timer}`, severity: "success", sticky: true});
+
+      const interval = setInterval(() => {
+        setTimer((prev) => {
+          if(prev <= 1) {
+            navigate("/multiplayer/questions");
+            clearInterval(interval);
+            toast?.current?.clear();
+            return 0;
+          }
+
+          toast?.current?.replace({
+            closable: false,
+            severity: "success",
+            sticky: true,
+            summary: `Game Starts in: ${prev - 1}`
+          });
+    
+          return prev - 1;
+        });
+      }, 1000);
+    });
   }, []);
 
   useEffect(() => {

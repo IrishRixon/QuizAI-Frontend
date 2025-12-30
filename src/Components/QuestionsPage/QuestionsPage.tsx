@@ -3,13 +3,21 @@ import { useFetchQuestions } from "./hooks/useFetchQuestions";
 import WithQuestions from "./WithQuestions";
 
 function QuestionsPage() {
-  const {questions, isFromDB, changeChosen} = useFetchQuestions();
+  const { questions, isFromDB, changeChosen } = useFetchQuestions();
 
-  if (questions.length === 0) {
-    return <LoadingPage text="AI is generating questions..." />;
-  } else {
-    return <WithQuestions questions={questions} isFromDB={isFromDB} changeChosen={changeChosen}></WithQuestions>;
-  }
+  return (
+  <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px] overflow-y-auto">
+    {questions.length === 0 ? (
+      <LoadingPage text="AI is generating questions..." />
+    ) : (
+      <WithQuestions
+        questions={questions}
+        isFromDB={isFromDB}
+        changeChosen={changeChosen}
+      ></WithQuestions>
+    )}
+  </main>
+  )
 }
 
 export default QuestionsPage;
