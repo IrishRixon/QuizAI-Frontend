@@ -140,9 +140,9 @@ function JoinRoom() {
                                 });
                             } else {
                                 const roomState = res.roomState;
-                                console.log(roomState, "Join room");
+                                console.log(roomState, "roomstate join");
                                 
-                                navigate("/multiplayer/room", { state: {roomState: roomState} });
+                                navigate(`/multiplayer/room/${roomIDstr}/${roomState.host.socketID}`);
                                 toast?.current?.show({
                                     severity: "success",
                                     summary: "Joined Room",

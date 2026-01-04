@@ -21,7 +21,7 @@ export function useTimer(numberOfQues: number) {
           return timeLimit;
         } else {
           setNextQuestion(false);
-          return prev; /*-1;*/
+          return prev-1;
         }
       });
     }, 1000);

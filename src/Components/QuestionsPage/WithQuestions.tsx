@@ -27,7 +27,7 @@ interface Props {
 
 function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
-  const [isAnswered, setIsAnswered] = useState(true);
+  const [isAnswered, setIsAnswered] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -97,7 +97,6 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
             ) {
               setScore((prev) => {
                 const updated = prev + 1;
-                console.log(updated);
                 return updated;
               });
             }

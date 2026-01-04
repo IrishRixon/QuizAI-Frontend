@@ -9,9 +9,7 @@ export function useStoreQuestions(param: Question[]) {
     if(hasRun.current) return;
     hasRun.current = true;
     
-    const store = async () => {
-      console.log("storing");
-      
+    const store = async () => {      
       await storeQuestions(param);
     };
 

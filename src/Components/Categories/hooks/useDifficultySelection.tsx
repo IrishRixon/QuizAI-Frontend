@@ -16,7 +16,6 @@ export function useDifficultySelection() {
   };
 
   useEffect(() => {
-    console.log(context!.categoriesSelected, "number");
   }, [context!.categoriesSelected]);
 
   return {

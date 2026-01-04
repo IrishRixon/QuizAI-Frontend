@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import Card from "./Card";
 import Difficulty from "./Difficulty";
@@ -9,6 +9,9 @@ import { useNavigate } from "react-router";
 import { Ripple } from "primereact/ripple";
 import BackButton from "../GeneralBtn/BackButton";
 import FooterButton from "../GeneralBtn/FooterButton";
+import { socket } from "../../socket";
+import type { PlayerData } from "../../Interface/PlayerData";
+import { ToastContext } from "../../Context/Toast";
 
 const categories = [
   "Food",
@@ -23,28 +26,62 @@ const categories = [
 ];
 
 function Categories() {
+  const playerName = localStorage.getItem("playerName") ?? "Newbie";
+  const playerAvatar =
+    localStorage.getItem("playerAvatar") ?? "/images/avatars/Avatar-1.png";
+
   const { categoriesSelected, setCategoriesSelected } = useContext(
     CategoryContext
   ) as StateCat;
+  const toast = useContext(ToastContext);
+
   const { isCategoryLessThanMax, selectedCategoriesLen, toggleCategory } =
     useCategorySelection(3);
   let navigate = useNavigate();
 
   const isStartBtnDisabled = categoriesSelected.selectedCategories.length == 0;
-  const isCreateRoom = window.location.pathname === '/multiplayer/categories';
+  const isCreateRoom = window.location.pathname === "/multiplayer/categories";
+
+  const playerData: PlayerData = { playerName, playerAvatar };
+
+  const effectRef = useRef(false);
 
   useEffect(() => {
+    if (effectRef.current) return;
+    effectRef.current = true;
+
     setCategoriesSelected((prev) => {
       return { ...prev, selectedCategories: [] };
     });
   }, []);
+
+  const createRoom = () => {
+    socket.connect();
+    console.log("hello");
+
+    toast?.current?.show({
+      icon: "pi pi-spin pi-spinner",
+      severity: "info",
+      summary: "Loading",
+      detail: "Creating room",
+      sticky: true,
+    });
+    socket.emit(
+      "create-room",
+      playerData,
+      categoriesSelected,
+      (response: { roomID: string }) => {
+        navigate(`/multiplayer/room/${response.roomID}/${socket.id}`);
+      }
+    );
+  };
 
   return (
     <main className="h-full w-full p-6 relative z-10 flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px]">
       <div className="flex justify-between">
         <BackButton
           handleClick={() => {
-            isCreateRoom ? navigate("/multiplayer") : navigate('/');
+            isCreateRoom ? navigate("/multiplayer") : navigate("/");
           }}
         />
 
@@ -81,8 +118,10 @@ function Categories() {
       <footer>
         <FooterButton
           boolRef={isStartBtnDisabled}
-          handleClick={() => isCreateRoom ? navigate("/multiplayer/room") : navigate("/questions")}
-          label={ isCreateRoom ? "Create Room" : "Start"}
+          handleClick={() =>
+            isCreateRoom ? createRoom() : navigate("/questions")
+          }
+          label={isCreateRoom ? "Create Room" : "Start"}
           isDisabled={isStartBtnDisabled}
         />
       </footer>
