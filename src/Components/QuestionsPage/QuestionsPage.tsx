@@ -10,7 +10,7 @@ function QuestionsPage() {
 
   return (
     <main className="p-6 w-full h-full z-10 relative flex flex-col sm:px-28 md:px-40 lg:px-52 xl:px-[450px] overflow-y-auto">
-      {questions.length === 0 ? (
+      {questions.length == 0 ? (
         <LoadingPage text="AI is generating questions..." />
       ) : (
         <WithQuestions

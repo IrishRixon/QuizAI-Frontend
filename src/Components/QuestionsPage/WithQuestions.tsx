@@ -13,11 +13,13 @@ import {
 } from "../../Context/ScoreContext";
 import { checkAnswer } from "../../Utils/utils";
 import type { Question } from "../../Interface/Question";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useStoreQuestions } from "./hooks/useStoreQuestions";
 import ParticipantCard from "../ParticipantCard/ParticipantCard";
 import LoadingDots from "../LoadingDots/LoadingDots";
 import FooterButton from "../GeneralBtn/FooterButton";
+import { socket } from "../../socket";
+import type { RoomState } from "../../Interface/RoomState";
 
 interface Props {
   questions: Question[];
@@ -27,8 +29,10 @@ interface Props {
 
 function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
-  const [isAnswered, setIsAnswered] = useState(false);
+  
   const navigate = useNavigate();
+  const { roomID } = useParams<{ roomID: string }>();
+  const [roomState, setRoomState] = useState<RoomState>();
 
   const {
     currentQuestionIndex,
@@ -36,6 +40,8 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
     setCurrentQuestionIndex,
     setTimer,
     timeRunOut,
+    isAnswered,
+    setIsAnswered
   } = useTimer(questions.length);
 
   const { setScore } = useContext(ScoreContext) as ScoreContextType;
@@ -51,6 +57,31 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
       navigate("/score", { state: { questions: questions } });
     }
   }, [timeRunOut]);
+
+  useEffect(() => {
+    socket.emit("get-room-state", roomID);
+
+    socket.on("room-update", (roomState: RoomState) => {
+      setRoomState(roomState);
+    });
+
+    socket.on("next-question", () => {
+      setIsAnswered(false);
+      socket.emit("toggle-off-all", roomID);
+      setCurrentQuestionIndex((prev) => {
+        const updated = prev + 1;
+
+        if (updated >= questions.length) {
+          setSelectedAns(-1);
+          navigate("/score", { state: { questions: questions } });
+          return prev;
+        }
+        setSelectedAns(-1);
+        setTimer(30);
+        return updated;
+      });
+    });
+  }, [])
 
   return (
     <main className="w-full h-full relative flex flex-col">
@@ -101,18 +132,24 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
               });
             }
 
-            setCurrentQuestionIndex((prev) => {
-              const updated = prev + 1;
+            if (!roomID) {
+              setCurrentQuestionIndex((prev) => {
+                const updated = prev + 1;
 
-              if (updated >= questions.length) {
+                if (updated >= questions.length) {
+                  setSelectedAns(-1);
+                  navigate("/score", { state: { questions: questions } });
+                  return prev;
+                }
                 setSelectedAns(-1);
-                navigate("/score", { state: { questions: questions } });
-                return prev;
-              }
-              setSelectedAns(-1);
-              setTimer(30);
-              return updated;
-            });
+                setTimer(30);
+                return updated;
+              });
+            }
+            else {
+              setIsAnswered(true);
+              socket.emit("toggle-ready-answered", roomID, socket.id);
+            }
           }}
         />
       )}
@@ -121,29 +158,17 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
         <article className="mt-11 flex flex-col gap-4">
           <p className="text-(--white-text)">Participants: </p>
 
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              image="\images\avatars\Avatar-1.png"
-              playerName="Jiang He"
-            />
-            <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              image="\images\avatars\Avatar-2.png"
-              playerName="Jiang He"
-            />
-            <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <ParticipantCard
-              image="\images\avatars\Avatar-3.png"
-              playerName="Jiang He"
-            />
-            <LoadingDots />
-          </div>
+          {roomState?.players.map((ele) => {
+            return (
+              <div className="flex justify-between items-center">
+                <ParticipantCard
+                  image={ele.playerAvatar}
+                  playerName={ele.playerName}
+                />
+                {!ele.isReady ? <LoadingDots /> : <div className="bg-green-600 h-[10px] w-[10px] rounded-full"></div>}
+              </div>
+            )
+          })}
         </article>
       )}
     </main>

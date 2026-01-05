@@ -20,9 +20,7 @@ import { useParams } from "react-router";
 
 
 export function useFetchQuestions() {
-  const [questions, setQuestions] = useState<Question[]>([
-  
-  ]);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const [isFromDB, setIsFromDb] = useState(false);
   const [roomState, setRoomState] = useState<RoomState>();
@@ -71,6 +69,8 @@ export function useFetchQuestions() {
     socket.on("room-update", (room: RoomState) => {
       setRoomState(room);
       setQuestions(room.questions);
+      console.log(room, "ques");
+      
     });
 
 

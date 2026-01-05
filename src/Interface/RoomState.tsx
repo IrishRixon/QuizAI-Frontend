@@ -3,6 +3,7 @@ import type { Question } from "./Question";
 
 export interface RoomState {
     gameStarted: boolean;
+    timer: number;
     questions: Question[];
     questionIndex: number;
     categoriesSelected: CategoriesSelected;
