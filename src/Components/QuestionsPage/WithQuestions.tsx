@@ -31,7 +31,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   const [selectedAns, setSelectedAns] = useState(-1);
   
   const navigate = useNavigate();
-  const { roomID } = useParams<{ roomID: string }>();
+  const { roomID, hostID } = useParams<{ roomID: string, hostID: string }>();
   const [roomState, setRoomState] = useState<RoomState>();
 
   const {
@@ -59,6 +59,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
   }, [timeRunOut]);
 
   useEffect(() => {
+    if(!roomID) return;
     socket.emit("get-room-state", roomID);
 
     socket.on("room-update", (roomState: RoomState) => {
@@ -73,7 +74,7 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
 
         if (updated >= questions.length) {
           setSelectedAns(-1);
-          navigate("/score", { state: { questions: questions } });
+          navigate(`/multiplayer/room/${roomID}/${hostID}/multiscore`);
           return prev;
         }
         setSelectedAns(-1);
@@ -126,10 +127,14 @@ function WithQuestions({ questions, isFromDB, changeChosen }: Props) {
             if (
               checkAnswer(selectedAns, questions[currentQuestionIndex].answer)
             ) {
-              setScore((prev) => {
-                const updated = prev + 1;
-                return updated;
-              });
+              socket.emit("add-score", roomID);
+              
+              if(!roomID){
+                setScore((prev) => {
+                  const updated = prev + 1;
+                  return updated;
+                });
+              }
             }
 
             if (!roomID) {

@@ -33,28 +33,28 @@ export function useFetchQuestions() {
 
   const hasFetched = useRef(false);
 
-  // useEffect(() => {
-  //   if(window.location.pathname === `/multiplayer/room/:roomID/questions`) return;
-  //   if (hasFetched.current) return;
-  //   hasFetched.current = true;
+  useEffect(() => {
+    if(roomID) return;
+    if (hasFetched.current) return;
+    hasFetched.current = true;
 
-  //   const fetching = async () => {
-  //     let result;
-  //     try {
-  //       result = await postCategories(categoriesSelected);
-  //       setIsFromDb(false);
-  //       setQuestions(result.data);
-  //     } catch (error) {
-  //       toast?.current?.show({ severity: 'info', summary: 'Getting questions from Database', detail: "AI failed to generate questions", life: 5000 });
-  //       result = await getDataToDatabase(categoriesSelected);
-  //       setIsFromDb(true);
-  //       setQuestions(result.data);
-  //     }
-  //   };
+    const fetching = async () => {
+      let result;
+      try {
+        result = await postCategories(categoriesSelected);
+        setIsFromDb(false);
+        setQuestions(result.data);
+      } catch (error) {
+        toast?.current?.show({ severity: 'info', summary: 'Getting questions from Database', detail: "AI failed to generate questions", life: 5000 });
+        result = await getDataToDatabase(categoriesSelected);
+        setIsFromDb(true);
+        setQuestions(result.data);
+      }
+    };
 
-  //     fetching();
+      fetching();
 
-  // }, []);
+  }, []);
 
   useEffect(() => {
     if (hasFetched.current) return;
